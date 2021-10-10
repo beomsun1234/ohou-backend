@@ -1,0 +1,21 @@
+### GET users
+GET http://localhost:8080/api/users
+Accept: application/vnd.com.manduljo.ohou.v1+json
+
+### GET user
+GET http://localhost:8080/api/users/6162e8483e1f7f4b54c436e9
+Accept: application/vnd.com.manduljo.ohou.v1+json
+
+
+### POST User
+POST localhost:8080/api/users
+Content-Type: application/json
+Accept: application/vnd.com.manduljo.ohou.v1+json
+
+{
+  "username": "username",
+  "password": "password",
+  "passwordConfirm": "password"
+}
+
+###

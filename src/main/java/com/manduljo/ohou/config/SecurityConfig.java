@@ -1,6 +1,8 @@
 package com.manduljo.ohou.config;
+
 import com.manduljo.ohou.filter.AuthenticationFilter;
 import com.manduljo.ohou.filter.AuthorizationFilter;
+import com.manduljo.ohou.mongo.constant.AcceptType;
 import com.manduljo.ohou.oauth2.OAuth2SuccessHandler;
 import com.manduljo.ohou.oauth2.service.CustomOAuth2UserService;
 import com.manduljo.ohou.util.CookieUtil;
@@ -34,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                    .requestMatchers(request -> AcceptType.API_V1.equals(request.getHeader("accept"))).permitAll()
                     .antMatchers("/api/**").authenticated()
                     .anyRequest().permitAll()
                 .and()
