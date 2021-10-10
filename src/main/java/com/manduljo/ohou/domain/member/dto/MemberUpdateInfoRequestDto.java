@@ -11,14 +11,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @Getter
 @NoArgsConstructor
-public class MemberUpdateRequestDto {
+public class MemberUpdateInfoRequestDto {
     private String nickname;
     private MultipartFile profileImage; //이미지
     private String introduce;
     private Gender gender;
 
     @Builder
-    public MemberUpdateRequestDto(String nickname, MultipartFile profileImage, String introduce, Gender gender){
+    public MemberUpdateInfoRequestDto(String nickname, MultipartFile profileImage, String introduce, Gender gender){
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.introduce = introduce;

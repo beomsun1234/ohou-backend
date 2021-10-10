@@ -53,12 +53,16 @@ public class Member extends BaseTimeEntity {
         return this;
     }
 
-
     public Member updateMyInfo(String name, Gender gender, String profileImage,String introduce){
         this.name=name;
         this.gender = gender;
         this.profileImage = profileImage;
         this.introduce = introduce;
+        return this;
+    }
+
+    public Member updatePassword(String password){
+        this.password = password;
         return this;
     }
 
