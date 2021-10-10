@@ -2,6 +2,7 @@ package com.manduljo.ohou.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.manduljo.ohou.domain.member.Member;
 import com.manduljo.ohou.oauth2.CustomUserDetails;
+import com.manduljo.ohou.util.CookieUtil;
 import com.manduljo.ohou.util.JwtUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,10 +24,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-
-    public AuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil){
+    private final CookieUtil cookieUtil;
+    public AuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, CookieUtil cookieUtil){
         this.authenticationManager = authenticationManager;
         this.jwtUtil =  jwtUtil;
+        this.cookieUtil = cookieUtil;
     }
 
     @SneakyThrows
@@ -47,7 +50,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         log.info("usserDetail={}",userDetails);
         String token = jwtUtil.generateToken(userDetails.getMember().getEmail(), userDetails.getMember().getName());
         log.info("token={}", token);
-        response.sendRedirect("http://localhost:8080/");
+        //쿠키 or 쿼리스티링
+        response.addCookie(cookieUtil.generateCookie("token",token));
+        response.sendRedirect("http://localhost:8080/auth");
     }
 
     @Override

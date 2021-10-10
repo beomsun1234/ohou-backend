@@ -3,6 +3,7 @@ import com.manduljo.ohou.filter.AuthenticationFilter;
 import com.manduljo.ohou.filter.AuthorizationFilter;
 import com.manduljo.ohou.oauth2.OAuth2SuccessHandler;
 import com.manduljo.ohou.oauth2.service.CustomOAuth2UserService;
+import com.manduljo.ohou.util.CookieUtil;
 import com.manduljo.ohou.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final AuthorizationFilter authorizationFilter;
     private final JwtUtil jwtUtil;
+    private final CookieUtil cookieUtil;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -39,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .successHandler(oAuth2SuccessHandler)
                     .userInfoEndpoint()
                         .userService(customOAuth2UserService);
-        http.addFilter(new AuthenticationFilter(authenticationManager(),jwtUtil));
+        http.addFilter(new AuthenticationFilter(authenticationManager(),jwtUtil,cookieUtil));
         http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
