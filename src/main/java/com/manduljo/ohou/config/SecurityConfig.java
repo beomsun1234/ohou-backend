@@ -1,12 +1,16 @@
 package com.manduljo.ohou.config;
-import com.manduljo.ohou.AuthorizationFilter;
+import com.manduljo.ohou.filter.AuthenticationFilter;
+import com.manduljo.ohou.filter.AuthorizationFilter;
 import com.manduljo.ohou.oauth2.OAuth2SuccessHandler;
 import com.manduljo.ohou.oauth2.service.CustomOAuth2UserService;
+import com.manduljo.ohou.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -15,6 +19,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final AuthorizationFilter authorizationFilter;
+    private final JwtUtil jwtUtil;
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -30,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .successHandler(oAuth2SuccessHandler)
                     .userInfoEndpoint()
                         .userService(customOAuth2UserService);
-
+        http.addFilter(new AuthenticationFilter(authenticationManager(),jwtUtil));
         http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

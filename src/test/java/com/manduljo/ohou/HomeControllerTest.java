@@ -56,9 +56,7 @@ class HomeControllerTest {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer "+token);
         HttpEntity entity = new HttpEntity("",httpHeaders);
-
         ResponseEntity<String> responseEntity = restTemplate.exchange(uri("/api/test"), HttpMethod.GET, entity, String.class);
-
     }
 
 }
