@@ -40,12 +40,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             log.info("email={}", loginUser.getEmail());
             log.info("pass={}", loginUser.getPassword());
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getEmail(), loginUser.getPassword());
-            //  CustomUserDetailsService의 loadByUsername() 함수가 실행된다(나는 email로 호출한다)
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
-            // authentication 객체가 세션영역에 저장됨 => 로그인이 되었다는 뜻
-            //SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
             log.info("-----------로그인완료됨");
-            //log.info("email={}", securityUser.getEmail());
             return authentication;
     }
 
@@ -55,9 +51,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
         log.info("usserDetail={}",userDetails);
         String token = jwtUtil.generateToken(userDetails.getMember().getEmail(), userDetails.getMember().getName());
-        PrintWriter printWriter = response.getWriter();
-        printWriter.write("token="+token);
-        printWriter.flush();
+        log.info("token={}", token);
+        response.sendRedirect("http://localhost:8080/");
     }
 
 }
