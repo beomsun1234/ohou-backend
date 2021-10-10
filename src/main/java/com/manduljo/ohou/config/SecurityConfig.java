@@ -1,7 +1,9 @@
 package com.manduljo.ohou.config;
 import com.manduljo.ohou.filter.AuthenticationFilter;
 import com.manduljo.ohou.filter.AuthorizationFilter;
-import com.manduljo.ohou.oauth2.OAuth2SuccessHandler;
+import com.manduljo.ohou.filter.CustomAuthenticationEntryPoint;
+import com.manduljo.ohou.oauth2.handler.OAuth2FailureHandler;
+import com.manduljo.ohou.oauth2.handler.OAuth2SuccessHandler;
 import com.manduljo.ohou.oauth2.service.CustomOAuth2UserService;
 import com.manduljo.ohou.util.CookieUtil;
 import com.manduljo.ohou.util.JwtUtil;
@@ -21,7 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final AuthorizationFilter authorizationFilter;
     private final JwtUtil jwtUtil;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
     private final CookieUtil cookieUtil;
+
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -33,12 +38,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .and()
                 .authorizeRequests()
                     .antMatchers("/api/**").authenticated()
                     .anyRequest().permitAll()
                 .and()
                 .oauth2Login()
                     .successHandler(oAuth2SuccessHandler)
+                    .failureHandler(oAuth2FailureHandler)
                     .userInfoEndpoint()
                         .userService(customOAuth2UserService);
         http.addFilter(new AuthenticationFilter(authenticationManager(),jwtUtil,cookieUtil));

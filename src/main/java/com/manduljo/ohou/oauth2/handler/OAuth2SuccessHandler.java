@@ -1,5 +1,6 @@
-package com.manduljo.ohou.oauth2;
+package com.manduljo.ohou.oauth2.handler;
 
+import com.manduljo.ohou.oauth2.OAuth2Attributes;
 import com.manduljo.ohou.util.CookieUtil;
 import com.manduljo.ohou.util.JwtUtil;
 import lombok.RequiredArgsConstructor;

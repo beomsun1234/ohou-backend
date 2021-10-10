@@ -49,8 +49,12 @@ public class JwtUtil {
     }
 
     public Boolean isTokenExpired(String token) {
-        final Date expiration = extractAllClaims(token).getExpiration();
-        return expiration.before(new Date());
+        try {
+            final Date expiration = extractAllClaims(token).getExpiration();
+            return expiration.before(new Date());
+        }catch (Exception e) {
+            return false;
+        }
     }
 
     public Boolean validateToken(String token, Member member) {
@@ -63,7 +67,6 @@ public class JwtUtil {
     }
 
     public String extractHeader(String token){
-        //
         return token.substring(7);
     }
 
