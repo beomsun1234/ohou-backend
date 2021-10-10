@@ -1,12 +1,9 @@
 package com.manduljo.ohou.oauth2;
-
-
 import com.manduljo.ohou.domain.member.LoginType;
 import com.manduljo.ohou.domain.member.Member;
 import com.manduljo.ohou.domain.member.Role;
 import lombok.Builder;
 import lombok.Getter;
-
 import java.util.Map;
 
 @Getter
@@ -16,19 +13,21 @@ public class OAuth2Attributes {
     private String name;
     private String email;
     private LoginType loginType;
-
+    private String profileImage;
     @Builder
     public OAuth2Attributes(Map<String, Object> attributes,
                             String userNameAttributeName,
                             String name,
                             String email,
-                            LoginType loginType
+                            LoginType loginType,
+                            String profileImage
                             ) {
         this.attributes = attributes;
         this.userNameAttributeName = userNameAttributeName;
         this.name = name;
         this.email = email;
         this.loginType = loginType;
+        this.profileImage = profileImage;
     }
 
     public static OAuth2Attributes of(String registrationId,
@@ -85,6 +84,7 @@ public class OAuth2Attributes {
                 .name(name)
                 .loginType(loginType)
                 .role(Role.ROLE_USER)
+                .profileImage(profileImage)
                 .build();
     }
 }
