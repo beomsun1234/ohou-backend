@@ -3,23 +3,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.manduljo.ohou.domain.member.Member;
 import com.manduljo.ohou.oauth2.CustomUserDetails;
 import com.manduljo.ohou.util.JwtUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 
 @Slf4j
@@ -55,4 +50,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.sendRedirect("http://localhost:8080/");
     }
 
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        log.info("실패");
+        response.sendRedirect("http://localhost:8080/fail");
+    }
 }
