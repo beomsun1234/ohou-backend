@@ -1,27 +1,33 @@
 package com.manduljo.ohou.mongo.config;
 
-import com.mongodb.MongoClientSettings;
-import org.bson.UuidRepresentation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.core.convert.DbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
 @EnableMongoRepositories(basePackages = "com.manduljo.ohou.mongo.repository")
 @EnableMongoAuditing
-public class MongoConfig extends AbstractMongoClientConfiguration {
+@RequiredArgsConstructor
+public class MongoConfig {
 
-  private static final String MONGODB_DATABASE = "ohou";
+  private final MongoDatabaseFactory mongoDatabaseFactory;
 
-  @Override
-  protected void configureClientSettings(MongoClientSettings.Builder builder) {
-    builder.uuidRepresentation(UuidRepresentation.STANDARD);
-  }
+  private final MongoMappingContext mongoMappingContext;
 
-  @Override
-  protected String getDatabaseName() {
-    return MONGODB_DATABASE;
+  @Bean
+  public MappingMongoConverter mappingMongoConverter() {
+    DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDatabaseFactory);
+    MappingMongoConverter mappingMongoConverter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
+    mappingMongoConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
+    return mappingMongoConverter;
   }
 
 }

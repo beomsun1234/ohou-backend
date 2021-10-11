@@ -1,10 +1,12 @@
-package com.manduljo.ohou.mongo.domain;
+package com.manduljo.ohou.mongo.domain.muser;
 
+import com.manduljo.ohou.mongo.domain.AuditMetadata;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Document(collection = "user")
+@Document(collection = "users")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,9 +14,10 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @ToString
 public class MUser {
 
-  @MongoId
+  @MongoId(FieldType.OBJECT_ID)
   private String id;
   private String name;
   private int age;
+  private AuditMetadata auditMetadata;
 
 }

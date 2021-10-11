@@ -7,3 +7,4 @@ spring:
     hibernate:
       ddl-auto: update
 
+logging.level.org.springframework.data.mongodb: DEBUG
