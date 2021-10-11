@@ -10,7 +10,6 @@ services:
     volumes:
       - dbencode:/etc/mysql
       - C:\Users\박범선\datadir:/var/lib/mysql
-
   mongodb:
     image: mongo
     container_name: mongodb
