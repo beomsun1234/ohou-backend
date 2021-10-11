@@ -1,5 +1,6 @@
-package com.manduljo.ohou.oauth2;
+package com.manduljo.ohou.oauth2.handler;
 
+import com.manduljo.ohou.oauth2.OAuth2Attributes;
 import com.manduljo.ohou.util.CookieUtil;
 import com.manduljo.ohou.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +11,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 
 @RequiredArgsConstructor

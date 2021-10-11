@@ -1,5 +1,6 @@
-package com.manduljo.ohou.oauth2;
+package com.manduljo.ohou.oauth2.service;
 
+import com.manduljo.ohou.oauth2.CustomUserDetails;
 import com.manduljo.ohou.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
