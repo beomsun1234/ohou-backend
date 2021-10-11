@@ -46,10 +46,11 @@ class ProdcutRepositoryTest {
         Assertions.assertThat(savedProduct.getName()).isEqualTo(product.getName());
     }
 
-    @AfterEach
-    void clear(){
-        prodcutRepository.deleteAll();
-        productCategoryRepository.deleteAll();
-    }
+
+//    @AfterEach
+//    void clear(){
+//        prodcutRepository.deleteAll();
+//        productCategoryRepository.deleteAll();
+//    }
 
 }

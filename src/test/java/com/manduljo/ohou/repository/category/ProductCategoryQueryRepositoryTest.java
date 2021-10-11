@@ -49,6 +49,22 @@ class ProductCategoryQueryRepositoryTest {
         //then
         Assertions.assertThat(subCategories.size()).isEqualTo(1);
     }
+    @Test
+    @DisplayName("메인카테고리 select")
+    void test3(){
+        //given
+        ProductCategory categoryParent = ProductCategory.builder().name("가구").build();
+        ProductCategory categoryParent2 = ProductCategory.builder().name("패브릭").build();
+        ProductCategory savedParent = productCategoryRepository.save(categoryParent);
+        ProductCategory savedParent2 = productCategoryRepository.save(categoryParent2);
+        ///자식생성
+        ProductCategory subCategory = ProductCategory.builder().name("소파").parentCategory(savedParent).build();
+        productCategoryRepository.save(subCategory);
+        //when
+        List<ProductCategory> mainCategory = productCategoryQueryRepository.findMainCategory();
+        //then
+        Assertions.assertThat(mainCategory.size()).isEqualTo(2);
+    }
 
     @AfterEach
     void clear(){
