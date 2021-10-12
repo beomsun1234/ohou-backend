@@ -71,7 +71,7 @@ public class MemberService {
         if(!imageUtil.checkContentType(memberUpdateRequestDto.getProfileImage().getContentType())){
             throw new IOException("잘못된 컨텐츠입니다.");
         }
-        String imagePath = imageUtil.genreateImagePath(member.getEmail(), memberUpdateRequestDto.getProfileImage());
+        String imagePath = imageUtil.genreateImagePath(member.getId().toString(), memberUpdateRequestDto.getProfileImage());
         return memberRepository.save(member.updateMyInfo(memberUpdateRequestDto.getNickname(), memberUpdateRequestDto.getGender(), imagePath, memberUpdateRequestDto.getIntroduce())).getId();
     }
 
