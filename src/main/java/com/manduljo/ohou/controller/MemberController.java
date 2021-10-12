@@ -4,7 +4,6 @@ import com.manduljo.ohou.ApiCommonResponse;
 import com.manduljo.ohou.domain.member.dto.MemberJoinRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdateInfoRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdatePasswordDto;
-import com.manduljo.ohou.repository.member.MemberRepository;
 import com.manduljo.ohou.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
@@ -19,8 +18,6 @@ import java.io.IOException;
 @RestController
 public class MemberController {
     private final MemberService memberService;
-    private final MemberRepository memberRepository;
-
     /**
      * 로그인
      * @param memberJoinRequestDto
@@ -54,7 +51,6 @@ public class MemberController {
     public Long updateMemberInfo(Authentication authentication, @PathVariable(name = "id") Long userId, MemberUpdateInfoRequestDto memberUpdateRequestDto) throws IOException {
         return memberService.updateInfo(authentication, userId,memberUpdateRequestDto);
     }
-
     /**
      * 비밀번호 변경
      * @param authentication
