@@ -30,7 +30,7 @@ public class StoreController {
 
     /**
      * 메인페이지를 위해서
-     * 부모카테고리 선택(디폴트는 가구)
+     * 부모카테고리 선택(디폴트는 가구) -> 하위 카테고리 및 가구에 대한 상품 조회
      * @param id
      * @return
      */
@@ -67,11 +67,14 @@ public class StoreController {
      * @return
      */
     @GetMapping("store/search")
-    public List<ProductInfo> getDynamicProductInfo(@RequestParam(name = "search", required = false, defaultValue = "") String searchText){
-        return productQueryRepository.findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(searchText)
-                .stream()
-                .map(product -> ProductInfo.builder().product(product).build())
-                .collect(Collectors.toList());
+    public ApiComonResponse getDynamicProductInfo(@RequestParam(name = "search", required = false, defaultValue = "") String searchText){
+        return ApiComonResponse.builder()
+                .status(String.valueOf(HttpStatus.OK.value()))
+                .message("성공")
+                .data(productQueryRepository.findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(searchText)
+                        .stream()
+                        .map(product -> ProductInfo.builder().product(product).build())
+                        .collect(Collectors.toList()))
+                .build();
     }
-
 }
