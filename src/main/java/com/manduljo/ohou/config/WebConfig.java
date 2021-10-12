@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     private String resources_location;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/profile/**")
+        registry.addResourceHandler("/images/**")
                 .addResourceLocations("file://" + resources_location);
     }
 

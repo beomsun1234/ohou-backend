@@ -37,7 +37,7 @@ public class MemberController {
      * @param userId
      * @return
      */
-    @GetMapping("/api/v1/member/{id}")
+    @GetMapping("/api/member/{id}")
     public ApiCommonResponse getInfo(Authentication authentication, @PathVariable(name = "id") Long userId){
         return memberService.getUserInfo(authentication, userId);
     }
@@ -50,7 +50,7 @@ public class MemberController {
      * @param memberUpdateRequestDto
      * @return
      */
-    @PutMapping("/api/v1/member/{id}")
+    @PutMapping("/api/member/{id}")
     public Long updateMemberInfo(Authentication authentication, @PathVariable(name = "id") Long userId, MemberUpdateInfoRequestDto memberUpdateRequestDto) throws IOException {
         return memberService.updateInfo(authentication, userId,memberUpdateRequestDto);
     }
@@ -62,7 +62,7 @@ public class MemberController {
      * @param memberUpdatePasswordDto
      * @return
      */
-    @PutMapping("/api/v1/member/{id}/password")
+    @PutMapping("/api/member/{id}/password")
     public ApiCommonResponse updatePassword(Authentication authentication, @PathVariable(name = "id") Long userId, @RequestBody MemberUpdatePasswordDto memberUpdatePasswordDto){
         return memberService.updatePassword(authentication, userId,memberUpdatePasswordDto);
     }

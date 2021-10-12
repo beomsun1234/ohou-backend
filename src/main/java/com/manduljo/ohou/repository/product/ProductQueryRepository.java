@@ -7,26 +7,29 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+
+import static com.manduljo.ohou.domain.category.QProductCategory.productCategory;
 import static com.manduljo.ohou.domain.product.QProduct.product;
 @Repository
 @RequiredArgsConstructor
 public class ProductQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<Product> findByParentId(Long id){
+    public List<Product> findByParentId(String id){
         return queryFactory
                 .selectFrom(product)
                 .where(product.productCategory.parentCategory.id.eq(id))
                 .fetch();
     }
 
-    public List<Product> findByCategoryId(Long id){
+    public List<Product> findByCategoryId(String id){
         return queryFactory
                 .selectFrom(product)
                 .where(eqCategoryId(id))
                 .fetch();
     }
 
+    //동적쿼리 상품이름, 카테고리이름 검색
     public List<Product> findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(String searchText){
         return queryFactory
                 .selectFrom(product)
@@ -36,12 +39,16 @@ public class ProductQueryRepository {
                 .fetch();
     }
 
-    private BooleanExpression eqCategoryId(Long id){
+    private BooleanExpression eqCategoryId(String id){
         if(id!=null){
-            return product.productCategory.id.eq(id);
+            if(id.contains("_")){
+                return product.productCategory.id.eq(id);
+            }
+            return product.productCategory.parentCategory.id.eq(id);
         }
         return null;
     }
+
     private BooleanExpression containsProductName(String searchText){
         if(searchText!=null){
             return product.name.contains(searchText);

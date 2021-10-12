@@ -14,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     //카테고리 이름
     private String name;
@@ -29,7 +28,8 @@ public class ProductCategory {
     private List<ProductCategory> subCategory = new ArrayList<>();
 
     @Builder
-    public ProductCategory(String name,ProductCategory parentCategory) {
+    public ProductCategory(String id, String name,ProductCategory parentCategory) {
+        this.id = id;
         this.name = name;
         this.parentCategory = parentCategory;
     }
