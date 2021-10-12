@@ -1,5 +1,5 @@
 package com.manduljo.ohou.service;
-import com.manduljo.ohou.ApiComonResponse;
+import com.manduljo.ohou.ApiCommonResponse;
 import com.manduljo.ohou.domain.member.Member;
 import com.manduljo.ohou.domain.member.dto.MemberInfo;
 import com.manduljo.ohou.domain.member.dto.MemberJoinRequestDto;
@@ -29,9 +29,9 @@ public class MemberService {
      * @param memberJoinRequestDto
      * @return
      */
-    public ApiComonResponse join(MemberJoinRequestDto memberJoinRequestDto){
+    public ApiCommonResponse join(MemberJoinRequestDto memberJoinRequestDto){
         validateEmail(memberJoinRequestDto.getEmail());
-        return ApiComonResponse.builder()
+        return ApiCommonResponse.builder()
                 .message("회원가입 성공")
                 .status(String.valueOf(HttpStatus.OK.value()))
                 .data(memberRepository.save(memberJoinRequestDto.toEntity(bCryptPasswordEncoder.encode(memberJoinRequestDto.getPassword()))).getId())
@@ -43,12 +43,12 @@ public class MemberService {
      * @param memberId
      * @return
      */
-    public ApiComonResponse getUserInfo(Authentication authentication,Long memberId){
+    public ApiCommonResponse getUserInfo(Authentication authentication, Long memberId){
         validateUser(authentication,memberId);
         MemberInfo memberInfo = MemberInfo.builder()
                 .entity(memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다")))
                 .build();
-        return ApiComonResponse.builder()
+        return ApiCommonResponse.builder()
                 .message("유저 정보")
                 .status(String.valueOf(HttpStatus.OK.value()))
                 .data(memberInfo)
@@ -81,12 +81,12 @@ public class MemberService {
      * @param memberUpdatePasswordDto
      * @return
      */
-    public ApiComonResponse updatePassword(Authentication authentication,Long userId, MemberUpdatePasswordDto memberUpdatePasswordDto){
+    public ApiCommonResponse updatePassword(Authentication authentication, Long userId, MemberUpdatePasswordDto memberUpdatePasswordDto){
         validateUser(authentication,userId);
         validatePassword(memberUpdatePasswordDto.getPassword(),memberUpdatePasswordDto.getCheckPassword());
         String password = bCryptPasswordEncoder.encode(memberUpdatePasswordDto.getPassword());
         Member member = memberRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
-        return ApiComonResponse.builder()
+        return ApiCommonResponse.builder()
                 .message("패스워드 변경 성공")
                 .status(String.valueOf(HttpStatus.OK.value()))
                 .data(memberRepository.save(member.updatePassword(password)).getId())

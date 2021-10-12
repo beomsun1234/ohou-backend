@@ -1,9 +1,9 @@
-package com.manduljo.ohou.mongo.controller;
+package com.manduljo.ohou.mongo.controller.member;
 
 import lombok.Getter;
 import lombok.ToString;
 
-public class MUserDto {
+public class MMemberDto {
 
   @Getter
   @ToString
@@ -21,7 +21,7 @@ public class MUserDto {
   @ToString
   public static class SaveRequest {
     private String name;
-    private int age;
+    private String email;
   }
 
 }

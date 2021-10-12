@@ -1,17 +1,16 @@
-package com.manduljo.ohou.mongo.service;
+package com.manduljo.ohou.mongo.service.member;
 
 import lombok.*;
 
-public class MUserCommand {
+public class MMemberCriteria {
 
   @Getter
   @NoArgsConstructor
   @AllArgsConstructor
   @Builder
   @ToString
-  public static class SaveRequest {
+  public static class FindRequest {
     private String name;
-    private int age;
   }
   
 }

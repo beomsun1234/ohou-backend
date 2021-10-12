@@ -1,0 +1,28 @@
+### GET users
+GET http://localhost:8080/api/members
+Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
+
+### GET user by name
+GET http://localhost:8080/api/members
+Content-Type: application/json
+Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
+
+{
+  "name": "name1"
+}
+
+### GET user by id
+GET http://localhost:8080/api/members/61648e2acb53a12a8098295c
+Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
+
+### POST User
+POST localhost:8080/api/members
+Content-Type: application/json
+Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
+
+{
+  "name": "name3",
+  "email": "name3@email.com"
+}
+
+###

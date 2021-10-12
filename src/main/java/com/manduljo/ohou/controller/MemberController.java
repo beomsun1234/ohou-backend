@@ -1,6 +1,6 @@
 package com.manduljo.ohou.controller;
 
-import com.manduljo.ohou.ApiComonResponse;
+import com.manduljo.ohou.ApiCommonResponse;
 import com.manduljo.ohou.domain.member.dto.MemberJoinRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdateInfoRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdatePasswordDto;
@@ -27,7 +27,7 @@ public class MemberController {
      * @return
      */
     @PostMapping("/join")
-    public ApiComonResponse join(@RequestBody MemberJoinRequestDto memberJoinRequestDto){
+    public ApiCommonResponse join(@RequestBody MemberJoinRequestDto memberJoinRequestDto){
         return memberService.join(memberJoinRequestDto);
     }
 
@@ -38,7 +38,7 @@ public class MemberController {
      * @return
      */
     @GetMapping("/api/v1/member/{id}")
-    public ApiComonResponse getInfo(Authentication authentication,@PathVariable(name = "id") Long userId){
+    public ApiCommonResponse getInfo(Authentication authentication, @PathVariable(name = "id") Long userId){
         return memberService.getUserInfo(authentication, userId);
     }
 
@@ -63,7 +63,7 @@ public class MemberController {
      * @return
      */
     @PutMapping("/api/v1/member/{id}/password")
-    public ApiComonResponse updatePassword(Authentication authentication, @PathVariable(name = "id") Long userId, @RequestBody MemberUpdatePasswordDto memberUpdatePasswordDto){
+    public ApiCommonResponse updatePassword(Authentication authentication, @PathVariable(name = "id") Long userId, @RequestBody MemberUpdatePasswordDto memberUpdatePasswordDto){
         return memberService.updatePassword(authentication, userId,memberUpdatePasswordDto);
     }
 
