@@ -2,10 +2,12 @@ package com.manduljo.ohou.controller;
 
 import com.manduljo.ohou.ApiComonResponse;
 import com.manduljo.ohou.domain.category.dto.CategoryInfo;
+import com.manduljo.ohou.domain.product.Product;
 import com.manduljo.ohou.domain.product.dto.ProductInfo;
 import com.manduljo.ohou.repository.category.ProductCategoryQueryRepository;
 import com.manduljo.ohou.repository.product.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 @RequestMapping("api")
 @RequiredArgsConstructor
 public class StoreController {
@@ -51,12 +54,24 @@ public class StoreController {
                 .map(product -> ProductInfo.builder().product(product).build())
                 .collect(Collectors.toList());
         data.put("product",productInfos);
-
         return ApiComonResponse.builder()
                 .status(String.valueOf(HttpStatus.OK.value()))
                 .message("성공")
                 .data(data)
                 .build();
+    }
+
+    /**
+     * 검색
+     * @param searchText
+     * @return
+     */
+    @GetMapping("store/search")
+    public List<ProductInfo> getDynamicProductInfo(@RequestParam(name = "search", required = false, defaultValue = "") String searchText){
+        return productQueryRepository.findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(searchText)
+                .stream()
+                .map(product -> ProductInfo.builder().product(product).build())
+                .collect(Collectors.toList());
     }
 
 }
