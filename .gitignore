@@ -40,3 +40,4 @@ application-db.yml
 application-oauth2.yml
 application-secret_key.yml
 application-resource.yml
+application-redis.yml

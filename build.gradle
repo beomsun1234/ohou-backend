@@ -47,6 +47,9 @@ dependencies {
 			"javax.annotation:javax.annotation-api",
 			"com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
+	//redis 설정
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 }
 sourceSets {
 	main {

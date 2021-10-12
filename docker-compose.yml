@@ -18,6 +18,13 @@ services:
     volumes:
       - C:\Users\박범선\datadirmongo:/data/db
 
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - C:\Users\박범선\redis_datadir:/data
 
 volumes:
   dbencode:

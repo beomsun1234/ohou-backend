@@ -18,7 +18,6 @@ public class ProductController {
     public ApiCommonResponse getProductDetail(@PathVariable Long id){
         return productService.getProductDetailById(id);
     }
-
     /**
      * 상품 검색
      * @param searchText

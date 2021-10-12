@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: db, oauth2, secret_key, resource
+    include: db, oauth2, secret_key, resource, redis
 
 
   jpa:
