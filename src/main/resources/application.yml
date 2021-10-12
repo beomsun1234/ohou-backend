@@ -2,8 +2,13 @@ spring:
   profiles:
     include: db, oauth2, secret_key, resource
 
+
   jpa:
-    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
     hibernate:
       ddl-auto: update
+    show-sql: true
+
 

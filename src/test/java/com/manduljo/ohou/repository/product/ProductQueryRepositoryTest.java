@@ -20,7 +20,7 @@ class ProductQueryRepositoryTest {
     @DisplayName("메인페이지에 보여주기위해 부모카테고리 아이디를 가지고있는 모든 상품조회")
     @Test
     void test01(){
-        List<Product> products = productQueryRepository.findByParentId(1L);
+        List<Product> products = productQueryRepository.findByParentId("0");
         //then
         System.out.println(products.get(0).getName());
         Assertions.assertThat(products.size()).isEqualTo(2);
@@ -30,7 +30,7 @@ class ProductQueryRepositoryTest {
     @DisplayName("세부 카테고리에 해당하는 상품 조회")
     @Test
     void test02(){
-        List<Product> products = productQueryRepository.findByCategoryId(4L);
+        List<Product> products = productQueryRepository.findByCategoryId("4");
         //then
         System.out.println(products.get(0).getName());
         Assertions.assertThat(products.size()).isEqualTo(1);

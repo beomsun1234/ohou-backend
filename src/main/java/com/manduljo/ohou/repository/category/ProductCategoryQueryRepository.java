@@ -3,6 +3,7 @@ package com.manduljo.ohou.repository.category;
 
 import com.manduljo.ohou.domain.category.ProductCategory;
 import com.manduljo.ohou.domain.category.QProductCategory;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -22,12 +23,23 @@ public class ProductCategoryQueryRepository {
                 .fetch();
     }
 
+
+    /**
+     * id에 _ 포함되어있으면 서브카테고리 조회, 아니면 부모 조히
+     */
+    public List<ProductCategory> findByCategoryId(String id){
+        return queryFactory
+                .selectFrom(productCategory)
+                .where(eqCategoryId(id))
+                .fetch();
+    }
+
     /**
      * 서브카테고리
      * @param id
      * @return
      */
-    public List<ProductCategory> findCategoryByParentId(Long id){
+    public List<ProductCategory> findCategoryByParentId(String id){
         return queryFactory
                 .selectFrom(productCategory)
                 .where(productCategory.parentCategory.id.eq(id))
@@ -44,4 +56,15 @@ public class ProductCategoryQueryRepository {
                 .where(productCategory.parentCategory.id.isNull())
                 .fetch();
     }
+
+    private BooleanExpression eqCategoryId(String id){
+        if(id!=null){
+            if(id.contains("_")){
+                return productCategory.id.eq(id);
+            }
+            return productCategory.parentCategory.id.eq(id);
+        }
+        return null;
+    }
+
 }
