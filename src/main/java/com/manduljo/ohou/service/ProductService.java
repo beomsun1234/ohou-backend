@@ -8,6 +8,7 @@ import com.manduljo.ohou.repository.product.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class ProductService {
     /**
      * 상품 상세
      */
+    @Transactional(readOnly = true)
     public ApiCommonResponse getProductDetailById(Long id){
         return ApiCommonResponse.builder()
                 .status(String.valueOf(HttpStatus.OK.value()))
@@ -36,6 +38,7 @@ public class ProductService {
      * @param id
      * @return
      */
+    @Transactional(readOnly = true)
     public List<ProductInfo> findProductByCategoryId(String id){
         return productQueryRepository.findByCategoryId(id)
                 .stream()
@@ -43,6 +46,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public ApiCommonResponse getDynamicProductInfo(String searchText){
         return ApiCommonResponse.builder()
                 .status(String.valueOf(HttpStatus.OK.value()))

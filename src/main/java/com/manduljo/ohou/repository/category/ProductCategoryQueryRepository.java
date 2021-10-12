@@ -7,10 +7,11 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.manduljo.ohou.domain.category.QProductCategory.productCategory;
-
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,6 +24,13 @@ public class ProductCategoryQueryRepository {
                 .fetch();
     }
 
+    //
+    public Optional<ProductCategory> findById(String id){
+        return Optional.ofNullable(queryFactory
+                .selectFrom(productCategory)
+                .where(productCategory.id.eq(id))
+                .fetchFirst());
+    }
 
     /**
      * id에 _ 포함되어있으면 서브카테고리 조회, 아니면 부모 조히
@@ -56,7 +64,6 @@ public class ProductCategoryQueryRepository {
                 .where(productCategory.parentCategory.id.isNull())
                 .fetch();
     }
-
     private BooleanExpression eqCategoryId(String id){
         if(id!=null){
             if(id.contains("_")){

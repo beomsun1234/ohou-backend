@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -29,6 +31,7 @@ public class MemberService {
      * @param memberJoinRequestDto
      * @return
      */
+    @Transactional
     public ApiCommonResponse join(MemberJoinRequestDto memberJoinRequestDto){
         validateEmail(memberJoinRequestDto.getEmail());
         return ApiCommonResponse.builder()
@@ -43,6 +46,7 @@ public class MemberService {
      * @param memberId
      * @return
      */
+    @Transactional(readOnly = true)
     public ApiCommonResponse getUserInfo(Authentication authentication, Long memberId){
         validateUser(authentication,memberId);
         MemberInfo memberInfo = MemberInfo.builder()
@@ -61,6 +65,7 @@ public class MemberService {
      * @return
      * @throws IOException
      */
+    @Transactional
     public Long updateInfo(Authentication authentication, Long userId, MemberUpdateInfoRequestDto memberUpdateRequestDto) throws IOException {
         validateUser(authentication,userId);
         Member member = memberRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지않습니다"));
@@ -81,6 +86,7 @@ public class MemberService {
      * @param memberUpdatePasswordDto
      * @return
      */
+    @Transactional
     public ApiCommonResponse updatePassword(Authentication authentication, Long userId, MemberUpdatePasswordDto memberUpdatePasswordDto){
         validateUser(authentication,userId);
         validatePassword(memberUpdatePasswordDto.getPassword(),memberUpdatePasswordDto.getCheckPassword());
