@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .requestMatchers(request -> !request.getHeader("accept").isBlank() && request.getHeader("accept").contains(AcceptType.API_V1)).permitAll()
                     .antMatchers("/api/auth/**").permitAll()
+                    .antMatchers("/api/join").permitAll()
                     .antMatchers("/api/**").authenticated()
 
                     .anyRequest().permitAll()
