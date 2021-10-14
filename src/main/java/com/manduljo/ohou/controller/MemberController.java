@@ -2,10 +2,8 @@ package com.manduljo.ohou.controller;
 
 import com.manduljo.ohou.ApiCommonResponse;
 import com.manduljo.ohou.domain.member.dto.MemberJoinRequestDto;
-import com.manduljo.ohou.domain.member.dto.MemberLoginRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdateInfoRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdatePasswordDto;
-import com.manduljo.ohou.service.AuthService;
 import com.manduljo.ohou.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
