@@ -15,7 +15,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    public final static long TOKEN_VALIDATION_SECOND = 1000L * 60* 10;
+    public final static long TOKEN_VALIDATION_SECOND = 1000L * 60L * 60L;
 
     @Value("${secret.key}")
     private String secretKey;
