@@ -26,7 +26,7 @@ public class CategoryController {
     }
 
     @GetMapping("category")
-    public ApiCommonResponse test(){
+    public ApiCommonResponse findAllTreeCategory(){
         return productCategoryService.findAllCategory();
     }
 }
