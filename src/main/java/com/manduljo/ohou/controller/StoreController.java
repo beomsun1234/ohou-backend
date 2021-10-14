@@ -27,16 +27,15 @@ public class StoreController {
      *  3-> 가전     3_
      * 메인페이지를 위해서
      * 부모카테고리 선택(디폴트는 가구) -> 하위 카테고리 및 가구에 대한 상품 조회
+     * -----------------------------***--------------------------------
      * @param id
      * @return
      */
     @GetMapping("store")
     public ApiCommonResponse getProductInfoAndCategoryInfo(@RequestParam(name = "category",defaultValue = "0")String id){
         Map<String, Object> data = new HashMap<>();
-        if(!id.contains("_")){
             //부모일경우 자식 카테고리 가져오기
-            data.put("category",productCategoryService.findCategoryById(id));
-        }
+        data.put("category",productCategoryService.findAllCategory());
         data.put("product",productService.findProductByCategoryId(id));
         return ApiCommonResponse.builder()
                 .status(String.valueOf(HttpStatus.OK.value()))

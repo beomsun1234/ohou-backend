@@ -8,6 +8,7 @@ import com.manduljo.ohou.domain.member.dto.MemberUpdatePasswordDto;
 import com.manduljo.ohou.oauth2.CustomUserDetails;
 import com.manduljo.ohou.repository.member.MemberRepository;
 import com.manduljo.ohou.util.ImageUtil;
+import com.manduljo.ohou.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import java.io.IOException;
 @Service
 @Slf4j
 public class MemberService {
+
     private final ImageUtil imageUtil;
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;

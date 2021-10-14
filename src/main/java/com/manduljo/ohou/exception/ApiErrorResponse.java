@@ -10,7 +10,6 @@ public class ApiErrorResponse {
     private String error;
     private String message;
 
-
     @Builder
     public ApiErrorResponse(String error, String message){
         this.error = error;

@@ -11,12 +11,16 @@ import com.manduljo.ohou.util.CookieUtil;
 import com.manduljo.ohou.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -28,6 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2FailureHandler oAuth2FailureHandler;
     private final CookieUtil cookieUtil;
 
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -38,6 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .csrf().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
@@ -45,7 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     .requestMatchers(request -> !request.getHeader("accept").isBlank() && request.getHeader("accept").contains(AcceptType.API_V1)).permitAll()
+                    .antMatchers("/api/auth/**").permitAll()
                     .antMatchers("/api/**").authenticated()
+
                     .anyRequest().permitAll()
                 .and()
                 .oauth2Login()
@@ -55,5 +68,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .userService(customOAuth2UserService);
         http.addFilter(new AuthenticationFilter(authenticationManager(),jwtUtil,cookieUtil));
         http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedMethod("GET");
+        corsConfiguration.addAllowedMethod("POST");
+        corsConfiguration.addAllowedMethod("PUT");
+        corsConfiguration.addAllowedMethod("DELETE");
+        corsConfiguration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 }

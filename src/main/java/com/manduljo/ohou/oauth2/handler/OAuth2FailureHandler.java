@@ -19,6 +19,6 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.info("error={}",exception.getLocalizedMessage());
         //실패시 로그인페이지로
-        response.sendRedirect("http://localhost:8080/login");
+        response.sendRedirect("http://localhost:3000/login");
     }
 }

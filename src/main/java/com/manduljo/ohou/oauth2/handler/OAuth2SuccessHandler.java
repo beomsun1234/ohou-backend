@@ -31,7 +31,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         log.info("token={}", token);
         //쿠키 or 쿼리스티링 정하기
         response.addCookie(cookieUtil.generateCookie("token", token));
-        response.sendRedirect("http://localhost:8080/");
+        response.sendRedirect("http://localhost:3000/?state=success");
     }
 
 

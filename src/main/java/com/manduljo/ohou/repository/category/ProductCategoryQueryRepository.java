@@ -18,12 +18,13 @@ import java.util.Optional;
 public class ProductCategoryQueryRepository {
     private final JPAQueryFactory queryFactory;
 
+
+
     public List<ProductCategory> findAll(){
         return queryFactory
                 .selectFrom(productCategory)
                 .fetch();
     }
-
     //
     public Optional<ProductCategory> findById(String id){
         return Optional.ofNullable(queryFactory

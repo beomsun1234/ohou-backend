@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Getter
@@ -27,7 +28,7 @@ public class ProductCategory extends BaseTimeEntity implements Persistable<Strin
 
 
     @OneToMany(mappedBy = "parentCategory",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ProductCategory> subCategory = new LinkedHashSet<>();
+    private List<ProductCategory> subCategory = new ArrayList<>();
 
     @Builder
     public ProductCategory(String id, String name,ProductCategory parentCategory) {

@@ -1,14 +1,13 @@
 package com.manduljo.ohou.controller;
 
 import com.manduljo.ohou.ApiCommonResponse;
+
 import com.manduljo.ohou.domain.category.dto.CategoryCreateRequestDto;
-import com.manduljo.ohou.domain.category.dto.CategoryInfo;
+
 import com.manduljo.ohou.service.ProductCategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RequestMapping("api")
 @RestController
@@ -24,5 +23,10 @@ public class CategoryController {
     @PostMapping("category")
     public ApiCommonResponse createCategory(@RequestBody CategoryCreateRequestDto categoryCreateRequestDto){
         return productCategoryService.createCategory(categoryCreateRequestDto);
+    }
+
+    @GetMapping("category")
+    public ApiCommonResponse test(){
+        return productCategoryService.findAllCategory();
     }
 }

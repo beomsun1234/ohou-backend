@@ -52,12 +52,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         log.info("token={}", token);
         //쿠키 or 쿼리스티링
         response.addCookie(cookieUtil.generateCookie("token",token));
-        response.sendRedirect("http://localhost:8080/auth");
+        response.sendRedirect("http://localhost:8080/?auth=success");
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         log.info("실패");
-        response.sendRedirect("http://localhost:8080/fail");
+        response.sendRedirect("http://localhost:3000/?state=fail");
     }
 }

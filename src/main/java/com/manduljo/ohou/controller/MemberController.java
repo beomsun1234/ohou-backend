@@ -2,8 +2,10 @@ package com.manduljo.ohou.controller;
 
 import com.manduljo.ohou.ApiCommonResponse;
 import com.manduljo.ohou.domain.member.dto.MemberJoinRequestDto;
+import com.manduljo.ohou.domain.member.dto.MemberLoginRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdateInfoRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdatePasswordDto;
+import com.manduljo.ohou.service.AuthService;
 import com.manduljo.ohou.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,14 +18,15 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("api")
 public class MemberController {
     private final MemberService memberService;
     /**
-     * 로그인
+     * 회원가입
      * @param memberJoinRequestDto
      * @return
      */
-    @PostMapping("/join")
+    @PostMapping("join")
     public ApiCommonResponse join(@RequestBody MemberJoinRequestDto memberJoinRequestDto){
         return memberService.join(memberJoinRequestDto);
     }
@@ -34,7 +37,7 @@ public class MemberController {
      * @param userId
      * @return
      */
-    @GetMapping("/api/member/{id}")
+    @GetMapping("member/{id}")
     public ApiCommonResponse getInfo(Authentication authentication, @PathVariable(name = "id") Long userId){
         return memberService.getUserInfo(authentication, userId);
     }
@@ -47,7 +50,7 @@ public class MemberController {
      * @param memberUpdateRequestDto
      * @return
      */
-    @PutMapping("/api/member/{id}")
+    @PutMapping("member/{id}")
     public Long updateMemberInfo(Authentication authentication, @PathVariable(name = "id") Long userId, MemberUpdateInfoRequestDto memberUpdateRequestDto) throws IOException {
         return memberService.updateInfo(authentication, userId,memberUpdateRequestDto);
     }
@@ -58,7 +61,7 @@ public class MemberController {
      * @param memberUpdatePasswordDto
      * @return
      */
-    @PutMapping("/api/member/{id}/password")
+    @PutMapping("member/{id}/password")
     public ApiCommonResponse updatePassword(Authentication authentication, @PathVariable(name = "id") Long userId, @RequestBody MemberUpdatePasswordDto memberUpdatePasswordDto){
         return memberService.updatePassword(authentication, userId,memberUpdatePasswordDto);
     }
