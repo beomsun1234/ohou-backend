@@ -25,6 +25,10 @@ public class ProductController {
      */
     @GetMapping("products/search")
     public ApiCommonResponse getDynamicProductInfo(@RequestParam(name = "search", required = false, defaultValue = "") String searchText) {
-        return productService.getDynamicProductInfo(searchText);
+        return ApiCommonResponse.builder()
+                .status("조회성공")
+                .message("조회성공")
+                .data(productService.getDynamicProductInfo(searchText))
+                .build();
     }
 }

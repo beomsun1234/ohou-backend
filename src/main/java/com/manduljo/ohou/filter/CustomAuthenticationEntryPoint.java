@@ -30,7 +30,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         String exception = (String)request.getAttribute("exception");
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(new ObjectMapper().writeValueAsString(ApiErrorResponse.builder().error(exception).message("token expired").build()));
+        response.getWriter().write(new ObjectMapper().writeValueAsString(ApiErrorResponse.builder().error(exception).message("token error").build()));
         response.flushBuffer();
     }
 }

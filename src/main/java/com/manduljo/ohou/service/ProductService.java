@@ -6,6 +6,7 @@ import com.manduljo.ohou.domain.product.dto.ProductDetail;
 import com.manduljo.ohou.domain.product.dto.ProductInfo;
 import com.manduljo.ohou.repository.product.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,7 @@ public class ProductService {
      * @param id
      * @return
      */
+    @Cacheable(value = "products", key = "#id", unless = "#result.size()<20")
     @Transactional(readOnly = true)
     public List<ProductInfo> findProductByCategoryId(String id){
         return productQueryRepository.findByCategoryId(id)
@@ -46,15 +48,12 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "products", key = "#searchText", unless = "#result.size()<20")
     @Transactional(readOnly = true)
-    public ApiCommonResponse getDynamicProductInfo(String searchText){
-        return ApiCommonResponse.builder()
-                .status(String.valueOf(HttpStatus.OK.value()))
-                .message("성공")
-                .data(productQueryRepository.findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(searchText)
-                        .stream()
-                        .map(product -> ProductInfo.builder().product(product).build())
-                        .collect(Collectors.toList()))
-                .build();
+    public List<ProductInfo> getDynamicProductInfo(String searchText){
+        return productQueryRepository.findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(searchText)
+                .stream()
+                .map(product -> ProductInfo.builder().product(product).build())
+                .collect(Collectors.toList());
     }
 }
