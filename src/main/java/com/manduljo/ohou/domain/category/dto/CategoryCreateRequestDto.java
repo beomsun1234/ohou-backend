@@ -26,4 +26,5 @@ public class CategoryCreateRequestDto {
                 .parentCategory(parent)
                 .build();
     }
+
 }

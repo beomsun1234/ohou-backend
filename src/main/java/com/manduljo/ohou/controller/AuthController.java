@@ -4,6 +4,8 @@ import com.manduljo.ohou.ApiCommonResponse;
 import com.manduljo.ohou.domain.member.dto.MemberLoginRequestDto;
 import com.manduljo.ohou.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +18,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("auth/login")
-    public ApiCommonResponse authLogin(@RequestBody MemberLoginRequestDto memberLoginRequestDto){
-        return authService.login(memberLoginRequestDto);
+    public ResponseEntity<ApiCommonResponse> authLogin(@RequestBody MemberLoginRequestDto memberLoginRequestDto){
+        return new ResponseEntity<>(authService.login(memberLoginRequestDto), HttpStatus.OK);
     }
 
 }

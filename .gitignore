@@ -41,3 +41,8 @@ application-oauth2.yml
 application-secret_key.yml
 application-resource.yml
 application-redis.yml
+application-win.yml
+application-mac.yml
+application-sun.yml
+application-fdb.yml
+application-fdb2.yml

@@ -6,9 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Getter
 @NoArgsConstructor
-public class MemberInfo {
+public class MemberInfo implements Serializable {
     private String email;
     private String nickname;
     private Gender gender;
@@ -24,12 +26,4 @@ public class MemberInfo {
         this.introduce = entity.getIntroduce();
     }
 
-//    public MemberInfo of(Member entity){
-//        this.email=entity.getEmail();
-//        this.nickname=entity.getName();
-//        this.gender = entity.getGender();
-//        this.profieImage = entity.getProfileImage();
-//        this.introduce = entity.getIntroduce();
-//        return this;
-//    }
 }

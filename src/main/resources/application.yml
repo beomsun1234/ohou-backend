@@ -1,15 +1,22 @@
 spring:
+  profiles: mac
+
+---
+
+spring:
+  profiles: win
+
+---
+
+spring:
   profiles:
-    include: db, oauth2, secret_key, resource, redis
+    active: sun
+    include: oauth2, secret_key
 
 
-  jpa:
-    properties:
-      hibernate:
-        format_sql: true
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
+logging:
+  level:
+    jdbc:
+      sqlonly=debug: debug
 
 logging.level.org.springframework.data.mongodb: DEBUG
