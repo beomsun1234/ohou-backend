@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -74,18 +75,10 @@ public class ProductService {
     }
 
 
-    public void createProduct(){
+    public void createProduct(String id){
         //상품 등록은 서브카테고리만 가능함
-        ProductCategory category = productCategoryQueryRepository.findById("1_1");
-        //
-        Product product = Product.builder().productCategory(category).price("10000").thumbnailImage("ProductImage/").name("test").build();
+        ProductCategory category = productCategoryQueryRepository.findById(id).orElseThrow(()-> new NoSuchElementException("없는 카테고리 입니다"));
+        Product product = Product.builder().productCategory(category).price("10000").name("test").build();
         productRepository.save(product);
-
-        Product product2 = productRepository.findById(4L).orElseThrow();
-        if(!product2.getProductImage().isEmpty()){
-            log.info("t1={}",product2.getProductImage().get(0));
-            log.info("t1={}",product2.getProductImage().get(1));
-            log.info("t1={}",product2.getProductImage().get(2));
-        }
     }
 }

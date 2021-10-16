@@ -24,11 +24,11 @@ public class Product extends BaseTimeEntity {
 
     private String price;
 
-    //영속성 관리 x AND 테이블 매핑 x
     @Transient
     private String thumbnailImage;
 
     @Transient
+    //영속성 관리 x AND 테이블 매핑 x
     private final List<String> productImage = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,10 +36,10 @@ public class Product extends BaseTimeEntity {
     private ProductCategory productCategory;
 
     @Builder
-    public Product(String name, String price, String thumbnailImage, ProductCategory productCategory){
+    public Product(String name, String price, ProductCategory productCategory){
         this.name = name;
         this.price = price;
-        this.thumbnailImage = thumbnailImage;
+        //this.thumbnailImage = thumbnailImage;
         this.productCategory = productCategory;
     }
 

@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,10 +52,12 @@ public class ProductCategoryService {
                 .findByIdOrName(categoryCreateRequestDto.getId(),categoryCreateRequestDto.getName()).isPresent()){
             throw new IllegalArgumentException("이미 존재하는 카테고리 입니다.");
         }
-        //존재하지 않아야지 가능
         log.info("----------------------------------------------------");
         if(categoryCreateRequestDto.getParentId()!= null){
-            ProductCategory parentCategory = productCategoryQueryRepository.findById(categoryCreateRequestDto.getParentId());
+            ProductCategory parentCategory = productCategoryQueryRepository
+                    .findById(categoryCreateRequestDto.getParentId())
+                    .orElseThrow(()->new NoSuchElementException("저장하시려는 카테고리는의 루트는 없는 카테고리 입니다"));
+
             log.info("부모id={}",parentCategory.getId());
             ProductCategory category = categoryCreateRequestDto.toEntity(parentCategory);
 

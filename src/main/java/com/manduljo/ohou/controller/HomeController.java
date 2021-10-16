@@ -6,9 +6,9 @@ import com.manduljo.ohou.oauth2.CustomUserDetails;
 import com.manduljo.ohou.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -28,9 +28,11 @@ public class HomeController {
         return "hello "+userDetails.getMember().getName();
     }
 
-    @GetMapping("/test")
-    public String test2(){
-        productService.createProduct();
+    @CacheEvict(value = "products", allEntries = true)
+    @PostMapping("/test")
+    public String test2(@RequestParam String id){
+        log.info("id={}",id);
+        productService.createProduct(id);
         return "gd";
     }
 

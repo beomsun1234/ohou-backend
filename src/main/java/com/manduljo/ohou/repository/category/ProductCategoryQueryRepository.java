@@ -33,11 +33,11 @@ public class ProductCategoryQueryRepository {
     }
 
     //
-    public ProductCategory findById(String id){
-        return queryFactory
+    public Optional<ProductCategory> findById(String id){
+        return Optional.ofNullable(queryFactory
                 .selectFrom(productCategory)
                 .where(productCategory.id.eq(id))
-                .fetchOne();
+                .fetchOne());
     }
 
 
