@@ -7,9 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Getter
 @NoArgsConstructor
-public class ProductInfo {
+public class ProductInfo implements Serializable {
     private Long id;
     private String name;
     private String price;

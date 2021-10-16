@@ -5,6 +5,8 @@ import com.manduljo.ohou.service.ProductCategoryService;
 import com.manduljo.ohou.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +34,14 @@ public class StoreController {
      * @return
      */
     @GetMapping("store")
-    public ApiCommonResponse getProductInfoAndCategoryInfo(@RequestParam(name = "category",defaultValue = "0")String id){
+    public ApiCommonResponse getProductInfoAndCategoryInfo(@RequestParam(name = "category",defaultValue = "0")String id
+                                                            ,@RequestParam(defaultValue = "0") int page) {
+        Pageable pageRequest = PageRequest.of(page, 5);
         Map<String, Object> data = new HashMap<>();
-            //부모일경우 자식 카테고리 가져오기
+        log.info("offset={}",pageRequest.getOffset());
+        log.info("pagenum={}", pageRequest.getPageNumber());
         data.put("category",productCategoryService.findAllCategory());
-        data.put("product",productService.findProductByCategoryId(id));
+        data.put("product",productService.findProductByCategoryId(id,pageRequest));
         return ApiCommonResponse.builder()
                 .status(String.valueOf(HttpStatus.OK.value()))
                 .message("성공")

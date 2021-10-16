@@ -4,21 +4,17 @@ import com.manduljo.ohou.domain.category.ProductCategory;
 import com.manduljo.ohou.domain.product.Product;
 import com.manduljo.ohou.repository.category.ProductCategoryRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class ProdcutRepositoryTest {
 
     @MockBean
-    private ProdcutRepository prodcutRepository;
+    private ProductRepository prodcutRepository;
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
 

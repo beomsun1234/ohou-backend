@@ -1,24 +1,35 @@
 package com.manduljo.ohou.service;
 
 import com.manduljo.ohou.ApiCommonResponse;
+import com.manduljo.ohou.domain.category.ProductCategory;
 import com.manduljo.ohou.domain.product.Product;
 import com.manduljo.ohou.domain.product.dto.ProductDetail;
 import com.manduljo.ohou.domain.product.dto.ProductInfo;
+import com.manduljo.ohou.repository.category.ProductCategoryQueryRepository;
+import com.manduljo.ohou.repository.product.ProductRepository;
 import com.manduljo.ohou.repository.product.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductQueryRepository productQueryRepository;
-
+    private final ProductCategoryQueryRepository productCategoryQueryRepository;
+    private final ProductRepository productRepository;
     /**
      * 상품 상세
      */
@@ -35,19 +46,24 @@ public class ProductService {
                 .build();
     }
     /**
-     * 카테고리id
+     * 카테고리id별 검색
      * @param id
      * @return
      */
-    @Cacheable(value = "products", key = "#id", unless = "#result.size()<20")
+    @Cacheable(value = "products", key = "{#id,#pageable.pageNumber}", unless = "#result.size()<0")
     @Transactional(readOnly = true)
-    public List<ProductInfo> findProductByCategoryId(String id){
-        return productQueryRepository.findByCategoryId(id)
+    public List<ProductInfo> findProductByCategoryId(String id, Pageable pageable){
+        return productQueryRepository.findByCategoryId(pageable, id)
                 .stream()
                 .map(product -> ProductInfo.builder().product(product).build())
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 상품검색
+     * @param searchText
+     * @return
+     */
     @Cacheable(value = "products", key = "#searchText", unless = "#result.size()<20")
     @Transactional(readOnly = true)
     public List<ProductInfo> getDynamicProductInfo(String searchText){
@@ -55,5 +71,21 @@ public class ProductService {
                 .stream()
                 .map(product -> ProductInfo.builder().product(product).build())
                 .collect(Collectors.toList());
+    }
+
+
+    public void createProduct(){
+        //상품 등록은 서브카테고리만 가능함
+        ProductCategory category = productCategoryQueryRepository.findById("1_1");
+        //
+        Product product = Product.builder().productCategory(category).price("10000").thumbnailImage("ProductImage/").name("test").build();
+        productRepository.save(product);
+
+        Product product2 = productRepository.findById(4L).orElseThrow();
+        if(!product2.getProductImage().isEmpty()){
+            log.info("t1={}",product2.getProductImage().get(0));
+            log.info("t1={}",product2.getProductImage().get(1));
+            log.info("t1={}",product2.getProductImage().get(2));
+        }
     }
 }

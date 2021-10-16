@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -21,7 +24,12 @@ public class Product extends BaseTimeEntity {
 
     private String price;
 
+    //영속성 관리 x AND 테이블 매핑 x
+    @Transient
     private String thumbnailImage;
+
+    @Transient
+    private final List<String> productImage = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_category_id")
@@ -34,4 +42,15 @@ public class Product extends BaseTimeEntity {
         this.thumbnailImage = thumbnailImage;
         this.productCategory = productCategory;
     }
+
+
+    //데이터 조회시 이미지 경로 저장(테이블 만들지 않기 위해 사용) but 나중에 이미지 테이블 만들어야함
+    @PostLoad
+    public void setProductImages(){
+        for (int i = 1; i<=3; i++){
+            this.productImage.add("ProductImage/"+getId()+"/"+i+".png");
+        }
+        this.thumbnailImage = "ProductImage/"+getId()+"/"+"thumbnail.png";
+    }
+
 }

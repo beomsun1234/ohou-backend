@@ -2,12 +2,18 @@ package com.manduljo.ohou.repository.product;
 
 
 import com.manduljo.ohou.domain.product.Product;
+import com.manduljo.ohou.domain.product.dto.ProductInfo;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.manduljo.ohou.domain.category.QProductCategory.productCategory;
 import static com.manduljo.ohou.domain.product.QProduct.product;
@@ -33,11 +39,18 @@ public class ProductQueryRepository {
                 .fetch();
     }
 
-    public List<Product> findByCategoryId(String id){
-        return queryFactory
+    //리미트30
+    public List<Product> findByCategoryId(Pageable pageable,String id){
+        QueryResults<Product> results = queryFactory
                 .selectFrom(product)
                 .where(eqCategoryId(id))
-                .fetch();
+                .orderBy(product.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(5)
+                .fetchResults();
+        List<Product> findProducts = results.getResults();
+        long total = results.getTotal();
+        return findProducts;
     }
     //-------------------------
 
