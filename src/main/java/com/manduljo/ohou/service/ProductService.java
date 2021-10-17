@@ -78,7 +78,7 @@ public class ProductService {
     public void createProduct(String id){
         //상품 등록은 서브카테고리만 가능함
         ProductCategory category = productCategoryQueryRepository.findById(id).orElseThrow(()-> new NoSuchElementException("없는 카테고리 입니다"));
-        Product product = Product.builder().productCategory(category).price("10000").name("test").build();
+        Product product = Product.builder().productCategory(category).price(20000).name("test2").build();
         productRepository.save(product);
     }
 }

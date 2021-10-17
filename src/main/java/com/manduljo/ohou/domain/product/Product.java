@@ -22,9 +22,10 @@ public class Product extends BaseTimeEntity {
 
     private String name;
 
-    private String price;
+    private int price;
 
     @Transient
+    //영속성 관리 x AND 테이블 매핑 x
     private String thumbnailImage;
 
     @Transient
@@ -36,7 +37,7 @@ public class Product extends BaseTimeEntity {
     private ProductCategory productCategory;
 
     @Builder
-    public Product(String name, String price, ProductCategory productCategory){
+    public Product(String name, int price, ProductCategory productCategory){
         this.name = name;
         this.price = price;
         //this.thumbnailImage = thumbnailImage;

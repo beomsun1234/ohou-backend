@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductDetail {
     private Long id;
     private String name;
-    private String price;
+    private int price;
     private String thumbnail;
     private List<String> productImg;
     // private List<String>productImage -> 상품 상세 이미지는 나중에

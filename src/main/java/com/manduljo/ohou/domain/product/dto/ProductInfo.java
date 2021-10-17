@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class ProductInfo implements Serializable {
     private Long id;
     private String name;
-    private String price;
+    private int price;
     private String thumbnailImage;
 
 
