@@ -44,7 +44,6 @@ public class Product extends BaseTimeEntity {
         this.productCategory = productCategory;
     }
 
-
     //데이터 조회시 이미지 경로 저장(테이블 만들지 않기 위해 사용) but 나중에 이미지 테이블 만들어야함
     @PostLoad
     public void setProductImages(){

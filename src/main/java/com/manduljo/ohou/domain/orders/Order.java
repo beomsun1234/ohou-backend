@@ -22,25 +22,26 @@ public class Order extends BaseTimeEntity {
 
     private int price;
 
-
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-
     @Builder
     public Order(Member member, List<OrderItem> orderItem){
         this.member = member;
-        this.price = orderItem.stream().mapToInt(orderItem1-> orderItem1.getPrice()*orderItem1.getQuantity()).sum();
         this.orderItems = orderItem;
-        setOrderItems(orderItem);
+        addOrderItems(orderItem);
+        this.price = getTotalPrice();
     }
 
-    public void setOrderItems(List<OrderItem> orderItem){
+    public void addOrderItems(List<OrderItem> orderItem){
         orderItem.forEach(orderItem1 -> orderItem1.setOrder(this));
+    }
+
+    public int getTotalPrice(){
+        return this.orderItems.stream().mapToInt(orderItem1-> orderItem1.getPrice()*orderItem1.getQuantity()).sum();
     }
 }

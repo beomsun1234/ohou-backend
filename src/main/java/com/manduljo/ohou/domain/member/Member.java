@@ -1,5 +1,6 @@
 package com.manduljo.ohou.domain.member;
 import com.manduljo.ohou.domain.BaseTimeEntity;
+import com.manduljo.ohou.domain.cart.Cart;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,8 +34,6 @@ public class Member extends BaseTimeEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private LoginType loginType;
-
-
 
 
     @Builder

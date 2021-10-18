@@ -3,13 +3,14 @@ package com.manduljo.ohou.domain.orderItem;
 import com.manduljo.ohou.domain.BaseTimeEntity;
 import com.manduljo.ohou.domain.orders.Order;
 import com.manduljo.ohou.domain.product.Product;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class OrderItem extends BaseTimeEntity{
@@ -42,4 +43,5 @@ public class OrderItem extends BaseTimeEntity{
     public void setOrder(Order order){
         this.order= order;
     }
+
 }
