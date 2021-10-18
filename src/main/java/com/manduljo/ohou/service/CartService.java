@@ -34,10 +34,10 @@ public class CartService {
         Product product = productRepository.findById(3L).orElseThrow();
         CartItem cartItem = CartItem.builder().product(product).quantity(2).build();
 
+        //카트 추가시 없으면 만듬
         Cart cart = cartRepository.findByMemberId(id)
                 .orElseGet(()->Cart.builder().member(memberRepository.findById(id)
                         .orElseThrow(()->new IllegalArgumentException("에러"))).build()).addCartItems(cartItem);
-
         cartRepository.save(cart);
     }
 
@@ -48,7 +48,12 @@ public class CartService {
      */
     @Transactional(readOnly = true)
     public List<CartInfo> findCartsByMemberId(Long id){
-        Cart cart = cartQueryRepository.findByMemberId(id).orElseThrow(()-> new IllegalArgumentException("카트가없는 맴버입니다"));
+        //카트 조회시 없으면 만듬
+        Cart cart = cartQueryRepository.findByMemberId(id)
+                .orElseGet(()-> cartRepository.save(Cart.builder()
+                        .member(memberRepository.findById(id)
+                                .orElseThrow(()-> new IllegalArgumentException("없는 화원입니다")))
+                        .build()));
         log.info("cart={}", cart.getId());
         return cart.getCartItems().stream()
                 .map(cartItem -> CartInfo.builder().cartItem(cartItem).build())
