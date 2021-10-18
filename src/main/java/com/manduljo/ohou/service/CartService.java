@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,19 +27,36 @@ public class CartService {
     private final CartQueryRepository cartQueryRepository;
 
     /**
-     * 카트생성 및 추카
+     * 카트생성 및 추가(카트에 같은 상품이 존재할 경우 수량만 업데이트)
      * @param id
      */
     @Transactional
-    public void createAndAddCart(Long id){
-        Product product = productRepository.findById(3L).orElseThrow();
-        CartItem cartItem = CartItem.builder().product(product).quantity(2).build();
-
+    public Long createAndAddCart(Long id){
+        AtomicInteger checkProduct = new AtomicInteger();
+        Product product = productRepository.findById(1L).orElseThrow();
         //카트 추가시 없으면 만듬
-        Cart cart = cartRepository.findByMemberId(id)
+        Cart cart = cartQueryRepository.findByMemberId(id) //fetch조인을 통해 카트 아이템과 상품을 모두 영속성
                 .orElseGet(()->Cart.builder().member(memberRepository.findById(id)
-                        .orElseThrow(()->new IllegalArgumentException("에러"))).build()).addCartItems(cartItem);
-        cartRepository.save(cart);
+                        .orElseThrow(()->new IllegalArgumentException("에러"))).build());
+
+        if(cart.getCartItems().isEmpty()){
+            cart.addCartItems(CartItem.builder().product(product).quantity(3).build());
+            return cartRepository.save(cart).getId();
+        }
+
+        cart.getCartItems().forEach(cartItem -> {
+            if(cartItem.getProduct().equals(product)){
+                //동일한 상품이 있을경우 수량 변경
+                checkProduct.set(1);
+                cartItem.updateQuantity(3);
+            }
+        });
+        if(checkProduct.get()!=1){
+            //동일한 상품이 없으면 카트 추가
+            return cartRepository.save(cart.addCartItems(CartItem.builder().product(product).quantity(2).build())).getId();
+        }
+
+        return cartRepository.save(cart).getId();
     }
 
     /**

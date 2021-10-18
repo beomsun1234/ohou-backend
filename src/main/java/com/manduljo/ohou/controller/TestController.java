@@ -28,9 +28,8 @@ public class TestController {
     }
 
     @PostMapping("cart/{member_id}")
-    public String test2(@PathVariable(name = "member_id") Long id){
-        cartService.createAndAddCart(id);
-        return "성공";
+    public Long test2(@PathVariable(name = "member_id") Long id){
+        return cartService.createAndAddCart(id);
     }
 
     @GetMapping("cart/{member_id}")
