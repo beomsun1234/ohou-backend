@@ -52,7 +52,7 @@ public class OrderService {
             //장바구니 구매시 /checkout?fromCart=true
             //선택된 장바구니 가져옴
             List<Long> itemIds = Arrays.asList(1L, 2L, 3L);// -> 프론트에서 선택된 장바구니 아이템 id 받아오기
-            Cart cart = cartQueryRepository.findByCartItemIdIn(itemIds).orElseThrow();
+            Cart cart = cartQueryRepository.findByCartItemByIdIn(itemIds).orElseThrow();
             List<OrderItem> orderItems = cart.getCartItems()
                     .stream()
                     .map(cartItem -> OrderItem.builder()

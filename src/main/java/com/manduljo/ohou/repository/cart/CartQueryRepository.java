@@ -1,6 +1,7 @@
 package com.manduljo.ohou.repository.cart;
 
 import com.manduljo.ohou.domain.cart.Cart;
+import com.manduljo.ohou.domain.cartItem.CartItem;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,15 +21,22 @@ public class CartQueryRepository {
     public Optional<Cart> findByMemberId(Long id){
         return Optional.ofNullable(queryFactory.selectFrom(cart)
                 .distinct()
-                .join(cart.cartItems, cartItem).fetchJoin()
-                .join(cartItem.product, product).fetchJoin()
+                .leftJoin(cart.cartItems, cartItem).fetchJoin()
+                .leftJoin(cartItem.product, product).fetchJoin()
                 .where(cart.member.id.eq(id))
                 .orderBy(cartItem.createdDate.desc())
                 .fetchOne());
     }
+    
+    public Optional<CartItem> findByCartItemById(Long id){
+        return Optional.ofNullable(queryFactory.selectFrom(cartItem)
+                .join(cartItem.cart, cart)
+                .where(cartItem.id.eq(id))
+                .fetchOne());
+    }
 
-    //장바구니상품 구매
-    public Optional<Cart> findByCartItemIdIn(List<Long> ids){
+    //장바구니상품 구매시 사용-> 수정해야함
+    public Optional<Cart> findByCartItemByIdIn(List<Long> ids){
         return Optional.ofNullable(queryFactory.selectFrom(cart)
                 .join(cart.cartItems, cartItem).fetchJoin()
                 .join(cartItem.product, product).fetchJoin()

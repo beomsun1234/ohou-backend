@@ -20,7 +20,7 @@ public class CartItem extends BaseTimeEntity {
 
     private String name;
 
-    private int price;
+    private int productPrice;
 
     private int quantity;
 
@@ -36,15 +36,21 @@ public class CartItem extends BaseTimeEntity {
     public CartItem(int quantity, Product product){
         this.product = product;
         this.name = product.getName();
-        this.price = product.getPrice() * quantity;
+        this.productPrice = product.getPrice();
         this.quantity =quantity;
     }
-
     public void setCart(Cart cart){
         this.cart = cart;
     }
 
-    public void updateQuantity(int quantity){
+    public void addQuantity(int quantity){
         this.quantity += quantity;
+    }
+    public int getTotalPrice(){
+        return this.productPrice*this.quantity;
+    }
+
+    public void updateQuantity(int quantity){
+        this.quantity = quantity;
     }
 }
