@@ -37,7 +37,8 @@ public class Member extends BaseTimeEntity implements Serializable {
 
 
     @Builder
-    public Member (String email, String name, String password, Role role, LoginType loginType,String profileImage, Gender gender, String introduce){
+    public Member (Long id,String email, String name, String password, Role role, LoginType loginType,String profileImage, Gender gender, String introduce){
+        this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;

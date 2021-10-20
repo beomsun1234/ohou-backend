@@ -51,18 +51,17 @@ public class OrderService {
             log.info("모두");
             //장바구니 구매시 /checkout?fromCart=true
             //선택된 장바구니 가져옴
-            List<Long> itemIds = Arrays.asList(1L, 2L, 3L);// -> 프론트에서 선택된 장바구니 아이템 id 받아오기
-            Cart cart = cartQueryRepository.findByCartItemByIdIn(itemIds).orElseThrow();
-            List<OrderItem> orderItems = cart.getCartItems()
-                    .stream()
-                    .map(cartItem -> OrderItem.builder()
-                            .product(cartItem.getProduct())
-                            .quantity(cartItem.getQuantity())
-                            .build())
+            List<Long> itemIds = Arrays.asList(1L, 2L, 3L,4L);// -> 프론트에서 선택된 장바구니 아이템 id 받아오기
+            List<CartItem> cartItems = cartQueryRepository.findByMemberIdAndCartItemIdIn(3L, itemIds);
+            if(cartItems.isEmpty()){
+                //장바구니 아이템이 없을 경우
+                throw new IllegalArgumentException("장바구니 아이템이 없습니다");
+            }
+            List<OrderItem> orderItems = cartItems.stream().map(cartItem -> OrderItem.builder().product(cartItem.getProduct()).quantity(cartItem.getQuantity()).build())
                     .collect(Collectors.toList());
-            orderRepository.save(Order.builder().member(cart.getMember()).orderItem(orderItems).build());
-            //주문 저장 후 카트아이템 삭제(카트 아이템은 카트에서 관리한다.)
-            cartService.deleteCartItemByIdIn(itemIds);
+            orderRepository.save(Order.builder().member(Member.builder().id(2L).build()).orderItem(orderItems).build());
+            //주문 저장 후 카트아이템 삭제
+            cartService.deleteCartItemByIdIn(cartItems.stream().map(CartItem::getId).collect(Collectors.toList()));
         }
     }
 }

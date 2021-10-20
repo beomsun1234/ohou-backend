@@ -81,12 +81,9 @@ public class CartService {
      */
     @Transactional(readOnly = true)
     public CartInfo findCartsByMemberId(Long id){
-        //카트 조회시 없으면 만듬
+        //카트 조회시 없으면 빈껍데기만 만듬
         Cart cart = cartQueryRepository.findByMemberId(id)
-                .orElseGet(()-> cartRepository.save(Cart.builder()
-                        .member(memberRepository.findById(id)
-                                .orElseThrow(()-> new IllegalArgumentException("없는 화원입니다")))
-                        .build()));
+                .orElseGet(()-> Cart.builder().build());
         return CartInfo.builder().cartIItemInfos(cart.getCartItems().stream()
                 .map(cartItem -> CartIItemInfo.builder().cartItem(cartItem).build())
                 .collect(Collectors.toList())).build();
@@ -102,6 +99,14 @@ public class CartService {
         cartQueryRepository.deleteCartItemByIdIn(cartItemIds);
     }
 
+    /**
+     * 장바구니 아이템 단건 삭제
+     * @param cartItemId
+     */
+    @Transactional
+    public void deleteCartItemById(Long cartItemId){
+        cartQueryRepository.deleteOneCartItemById(cartItemId);
+    }
     /**
      * 장바구니에 들어와서 직접 수정할 경우 해당
      * @return
