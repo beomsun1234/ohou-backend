@@ -1,6 +1,5 @@
 package com.manduljo.ohou.controller;
 
-import com.manduljo.ohou.domain.cart.dto.CartIItemInfo;
 import com.manduljo.ohou.domain.cart.dto.CartInfo;
 import com.manduljo.ohou.domain.cart.dto.CartItemAddDto;
 import com.manduljo.ohou.domain.cartItem.dto.CartItemUpdateQuantityDto;
@@ -10,15 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @RequiredArgsConstructor
 @RestController
 @Slf4j
 @RequestMapping("test")
-public class TestController {
+public class CartController {
     private final OrderService orderService;
     private final CartService cartService;
 
@@ -32,32 +27,33 @@ public class TestController {
 
     /**
      * 카트 생성 및 추가 및 업데이트
-     * @param cartItemAddDto -> memberId, productId, quantity
+     * @param id -> memberId
+     * @param cartItemAddDto -> productId, quantity
      * @return -> 카트 아이디 반환
      */
-    @PostMapping("cart")
-    public Long createOrAddOrUpdateCart(@RequestBody CartItemAddDto cartItemAddDto){
-        return cartService.createOrAddOrUpdateCart(cartItemAddDto);
+    @PostMapping("members/{id}/cart")
+    public Long createOrAddOrUpdateCart(@PathVariable Long id,@RequestBody CartItemAddDto cartItemAddDto){
+        return cartService.createOrAddOrUpdateCart(id, cartItemAddDto);
     }
 
     /**
      * 카트조회
-     * @param id-> 맴버 id 어차피 시큐리티 적용되면 id 받을 필요 없음! 아니면 member/id/cart 로 검색 할지 결정해야함
+     * @param id-> memberId
      * @return
      */
-    @GetMapping("cart/{member_id}")
-    public CartInfo getCartInfo(@PathVariable(name = "member_id") Long id){
+    @GetMapping("members/{id}/cart")
+    public CartInfo getCartInfo(@PathVariable Long id){
         return cartService.findCartsByMemberId(id);
     }
 
     /**
      * 장바구니 안에서 수량 설정
+     * @param id - memberId
      * @param cartItemUpdateQuantityDto = cartItemId, quantity
      * @return
      */
-    @PutMapping("cart")
-    public Long updateCartItemQuantity(@RequestBody CartItemUpdateQuantityDto cartItemUpdateQuantityDto){
-        return cartService.updateCartItem(cartItemUpdateQuantityDto);
+    @PutMapping("members/{id}/cart")
+    public Long updateCartItemQuantity(@PathVariable Long id, @RequestBody CartItemUpdateQuantityDto cartItemUpdateQuantityDto){
+        return cartService.updateCartItem(id,cartItemUpdateQuantityDto);
     }
-
 }

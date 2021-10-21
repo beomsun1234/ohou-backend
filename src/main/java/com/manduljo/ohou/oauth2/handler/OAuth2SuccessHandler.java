@@ -33,8 +33,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         response.addCookie(cookieUtil.generateCookie("token", token));
         response.sendRedirect("http://localhost:3000/?state=success");
     }
-
-
     //naver(UsernameAttribute) - response, kakao = id
     private OAuth2Attributes getUserInfo(OAuth2User oAuth2User){
         Map<String,Object> data = oAuth2User.getAttributes();

@@ -17,12 +17,16 @@ import static com.manduljo.ohou.domain.product.QProduct.product;
 public class CartQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    //장바구니 조회(최신 등록순으로)
-    public Optional<Cart> findByMemberId(Long id){
+    /**
+     * 장바구니 조회(최신 등록순으로)
+     * @param memberId
+     * @return
+     */
+    public Optional<Cart> findByMemberId(Long memberId){
         return Optional.ofNullable(queryFactory.selectFrom(cart)
                 .distinct()
                 .leftJoin(cart.cartItems, cartItem).fetchJoin()
-                .where(cart.member.id.eq(id))
+                .where(cart.member.id.eq(memberId))
                 .orderBy(cartItem.createdDate.desc())
                 .fetchOne());
     }
@@ -30,13 +34,14 @@ public class CartQueryRepository {
 
     /**
      * 장바구니 아이템 수정시
-     * @param id
+     * @param cartItemId
+     * @param memberId
      * @return
      */
-    public Optional<CartItem> findByCartItemById(Long id){
+    public Optional<CartItem> findByCartItemById(Long cartItemId, Long memberId){
         return Optional.ofNullable(queryFactory.selectFrom(cartItem)
                 .join(cartItem.cart, cart)
-                .where(cartItem.id.eq(id))
+                .where(cartItem.id.eq(cartItemId), cart.member.id.eq(memberId))
                 .fetchOne());
     }
 

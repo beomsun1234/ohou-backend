@@ -32,15 +32,16 @@ public class CartService {
     private final CartQueryRepository cartQueryRepository;
     /**
      * 카트생성 및 추가(카트에 같은 상품이 존재할 경우 수량만 추가)
-     * @param
+     * @param memberId
+     * @param cartItemAddDto - productId, quantiity
      */
     @Transactional
-    public Long createOrAddOrUpdateCart(CartItemAddDto cartItemAddDto){
+    public Long createOrAddOrUpdateCart(Long memberId, CartItemAddDto cartItemAddDto){
         //맴버 id, 상품 id, 수량
         Product product = productRepository.findById(cartItemAddDto.getProductId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
         //카트 추가시 해당 맴버가 카트가 존재하지 않을경우 카트 생성
-        Cart cart = cartQueryRepository.findByMemberId(cartItemAddDto.getMemberId()) //fetch조인을 통해 카트 아이템과 상품을 모두 영속성
-                .orElseGet(()->Cart.builder().member(memberRepository.findById(cartItemAddDto.getMemberId())
+        Cart cart = cartQueryRepository.findByMemberId(memberId) //fetch조인을 통해 카트 아이템과 상품을 모두 영속성
+                .orElseGet(()->Cart.builder().member(memberRepository.findById(memberId)
                         .orElseThrow(()->new IllegalArgumentException("에러"))).build());
 
         return checkCartItem(cart,product,cartItemAddDto.getQuantity());
@@ -48,9 +49,6 @@ public class CartService {
     /**
      * 카트에 해당 상품이 있는지 없는 체크하는 로직
      * 상품이 존재 할 경우 수량만 추가, 존재하지 않을경우 아이템 추가
-     * @param cart
-     * @param product
-     * @return
      */
     private Long checkCartItem(Cart cart, Product product, int quantity){
         AtomicInteger checkProduct = new AtomicInteger();
@@ -76,13 +74,13 @@ public class CartService {
 
     /**
      * 장바구니 조회
-     * @param id
+     * @param memberId
      * @return
      */
     @Transactional(readOnly = true)
-    public CartInfo findCartsByMemberId(Long id){
+    public CartInfo findCartsByMemberId(Long memberId){
         //카트 조회시 없으면 빈껍데기만 만듬
-        Cart cart = cartQueryRepository.findByMemberId(id)
+        Cart cart = cartQueryRepository.findByMemberId(memberId)
                 .orElseGet(()-> Cart.builder().build());
         return CartInfo.builder().cartIItemInfos(cart.getCartItems().stream()
                 .map(cartItem -> CartIItemInfo.builder().cartItem(cartItem).build())
@@ -112,9 +110,9 @@ public class CartService {
      * @return
      */
     @Transactional
-    public Long updateCartItem(CartItemUpdateQuantityDto cartItemUpdateQuantityDto){
-        CartItem cartItem = cartQueryRepository.findByCartItemById(cartItemUpdateQuantityDto.getCartItemId()).orElseThrow();
-        cartItem.updateQuantity(cartItemUpdateQuantityDto.getQuantiity());
+    public Long updateCartItem(Long memberId,CartItemUpdateQuantityDto cartItemUpdateQuantityDto){
+        CartItem cartItem = cartQueryRepository.findByCartItemById(cartItemUpdateQuantityDto.getCartItemId(),memberId).orElseThrow();
+        cartItem.updateQuantity(cartItemUpdateQuantityDto.getQuantity());
         return cartItemRepository.save(cartItem).getId();
     }
 }

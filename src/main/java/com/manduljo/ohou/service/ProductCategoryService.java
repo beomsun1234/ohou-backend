@@ -29,14 +29,15 @@ public class ProductCategoryService {
     @Transactional(readOnly = true)
     @Cacheable(value = "allCategory", key = "1")
     public List<CategoryInfo> findAllCategory(){
-        Map<String, List<CategoryInfo>> collect = productCategoryQueryRepository
-                .findAll()
-                .stream()
+        List<ProductCategory> categories = productCategoryQueryRepository
+                .findAll();
+        if(categories.isEmpty()){
+            return new ArrayList<>();
+        }
+        Map<String, List<CategoryInfo>> collect =
+                categories.stream()
                 .map(category -> CategoryInfo.builder().entity(category).build())
                 .collect(Collectors.groupingBy(CategoryInfo::getParentId));
-        if (collect.isEmpty()){
-            return Collections.singletonList(CategoryInfo.builder().entity(null).build());
-        }
         //루트인것을 가져와서 루트에 자식들을 셋팅해준다.(이방식으로 할 경우 레벨이 늘어날경우 유연하게 대처하기 힘들다 나중에 고려하자)
         List<CategoryInfo> sub = collect.get("root");
         sub.forEach(categoryInfo -> categoryInfo.setChild(collect.get(categoryInfo.getId())));

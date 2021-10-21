@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Cart extends BaseTimeEntity {
+public class Cart{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
