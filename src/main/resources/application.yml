@@ -1,5 +1,5 @@
 spring:
-  profiles: dev
+  profiles: sun
 
 ---
 
@@ -15,7 +15,7 @@ spring:
 
 spring:
   profiles:
-    active: sun
+    active: dev
     include: oauth2, secret_key
 
 

@@ -45,3 +45,4 @@ application-win.yml
 application-mac.yml
 application-sun.yml
 application-dev.yml
+docker-compose.yml
