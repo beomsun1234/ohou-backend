@@ -1,4 +1,9 @@
 spring:
+  profiles: dev
+
+---
+
+spring:
   profiles: mac
 
 ---

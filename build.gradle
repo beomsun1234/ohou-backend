@@ -39,7 +39,6 @@ dependencies {
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
 	//Querydsl 설정
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor(
@@ -63,5 +62,6 @@ sourceSets {
 }
 
 test {
+	exclude '**/*'
 	useJUnitPlatform()
 }

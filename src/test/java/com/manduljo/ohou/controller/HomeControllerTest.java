@@ -1,4 +1,4 @@
-package com.manduljo.ohou;
+package com.manduljo.ohou.controller;
 
 import com.manduljo.ohou.domain.member.LoginType;
 import com.manduljo.ohou.domain.member.Member;
@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
 import static java.lang.String.format;
 
 
-@AutoConfigureMockMvc
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HomeControllerTest {
 

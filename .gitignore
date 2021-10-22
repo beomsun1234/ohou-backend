@@ -44,5 +44,4 @@ application-redis.yml
 application-win.yml
 application-mac.yml
 application-sun.yml
-application-fdb.yml
-application-fdb2.yml
+application-dev.yml

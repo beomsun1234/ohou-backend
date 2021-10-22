@@ -12,18 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("test")
+@RequestMapping("api")
 public class CartController {
     private final OrderService orderService;
     private final CartService cartService;
 
-
-    @GetMapping("order")
-    public String test(@RequestParam(defaultValue = "0",name = "check") int ck){
-        log.info("ck={}",ck);
-        orderService.createOrder(ck);
-        return "성공";
-    }
 
     /**
      * 카트 생성 및 추가 및 업데이트
