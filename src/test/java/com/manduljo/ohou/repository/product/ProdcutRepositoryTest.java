@@ -6,48 +6,27 @@ import com.manduljo.ohou.repository.category.ProductCategoryRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@SpringBootTest
+@DataJpaTest
 class ProdcutRepositoryTest {
 
-    @MockBean
-    private ProductRepository prodcutRepository;
     @Autowired
-    private ProductCategoryRepository productCategoryRepository;
-
-
-     ProductCategory setUpCategory(){
-        //given
-        //////카테고리설정
-        ProductCategory categoryParent = ProductCategory.builder().name("가구").build();
-        ProductCategory categoryParent2 = ProductCategory.builder().name("패브릭").build();
-        ProductCategory savedParent = productCategoryRepository.save(categoryParent);
-        ProductCategory savedParent2 = productCategoryRepository.save(categoryParent2);
-        ////////자식생성
-        ProductCategory subCategory = ProductCategory.builder().name("소파").parentCategory(savedParent).build();
-        return productCategoryRepository.save(subCategory);
-        ///-----------------
-    }
+    private ProductRepository prodcutRepository;
 
     @DisplayName("crud test")
     @Test
     void save(){
         //given
-        Product product = Product.builder().name("이단소파").price("10000").productCategory(setUpCategory()).build();
+        Product product = Product.builder().name("이단소파").price(1000).productCategory(ProductCategory.builder().build()).build();
         //when
         Product savedProduct = prodcutRepository.save(product);
         //then
         Assertions.assertThat(savedProduct.getName()).isEqualTo(product.getName());
     }
-
-
-//    @AfterEach
-//    void clear(){
-//        prodcutRepository.deleteAll();
-//        productCategoryRepository.deleteAll();
-//    }
 
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@SpringBootTest
+@DataJpaTest
 class ProductCategoryRepositoryTest {
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
@@ -26,7 +26,8 @@ class ProductCategoryRepositoryTest {
     @DisplayName("기본적인 crud test")
     void save() {
         //given
-        ProductCategory category = ProductCategory.builder().name("gagu").build();
+        ProductCategory category = ProductCategory.builder().id("0").name("가구").build();
+        productCategoryRepository.save(category);
         //when
         ProductCategory savedCategory = productCategoryRepository.save(category);
         //then
@@ -37,17 +38,14 @@ class ProductCategoryRepositoryTest {
     @DisplayName("기본적인 crud test")
     void 조회(){
         //given
-        ProductCategory category = ProductCategory.builder().name("가구").build();
-        ProductCategory category2 = ProductCategory.builder().name("패브릭").build();
+        ProductCategory category = ProductCategory.builder().id("0").name("가구").build();
         productCategoryRepository.save(category);
+        ProductCategory category2 = ProductCategory.builder().id("1").name("페브릭").build();
         productCategoryRepository.save(category2);
         //then
         List<ProductCategory> categories = productCategoryRepository.findAll();
         //given
         Assertions.assertThat(categories.size()).isEqualTo(2);
     }
-    @AfterEach
-    void deleteAll(){
-        productCategoryRepository.deleteAll();
-    }
+
 }
