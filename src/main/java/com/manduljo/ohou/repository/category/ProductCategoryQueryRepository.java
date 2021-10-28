@@ -41,29 +41,6 @@ public class ProductCategoryQueryRepository {
     }
 
 
-    /**
-     * 서브카테고리
-     * @param id
-     * @return
-     */
-    public List<ProductCategory> findCategoryByParentId(String id){
-        return queryFactory
-                .selectFrom(productCategory)
-                .where(productCategory.parentCategory.id.eq(id))
-                .fetch();
-    }
-
-    /**
-     * 메인카테고리(루트가없는)
-     * @return
-     */
-    public List<ProductCategory> findMainCategory(){
-        return queryFactory
-                .selectFrom(productCategory)
-                .where(productCategory.parentCategory.id.isNull())
-                .fetch();
-    }
-
     private BooleanExpression eqCategoryName(String name){
         if(name!=null){
             return productCategory.name.eq(name);
