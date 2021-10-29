@@ -18,9 +18,9 @@ class ProdcutRepositoryTest {
     @Autowired
     private ProductRepository prodcutRepository;
 
-    @DisplayName("crud test")
+    @DisplayName("상품 생성")
     @Test
-    void save(){
+    void test_save(){
         //given
         Product product = Product.builder().name("이단소파").price(1000).productCategory(ProductCategory.builder().build()).build();
         //when
@@ -28,5 +28,7 @@ class ProdcutRepositoryTest {
         //then
         Assertions.assertThat(savedProduct.getName()).isEqualTo(product.getName());
     }
+
+
 
 }
