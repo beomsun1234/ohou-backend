@@ -35,15 +35,11 @@ public class ProductService {
      * 상품 상세
      */
     @Transactional(readOnly = true)
-    public ApiCommonResponse getProductDetailById(Long id){
-        return ApiCommonResponse.builder()
-                .status(String.valueOf(HttpStatus.OK.value()))
-                .message("성공")
-                .data(ProductDetail.builder()
-                        .entity(productQueryRepository
-                                .findById(id)
-                                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
-                        .build())
+    public ProductDetail getProductDetailById(Long id){
+        return ProductDetail.builder()
+                .entity(productQueryRepository
+                        .findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다.")))
                 .build();
     }
     /**
