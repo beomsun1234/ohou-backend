@@ -52,8 +52,8 @@ class ProductCategoryServiceTest {
         List<CategoryInfo> findAllCategory = productCategoryService.findAllCategory();
         //then
         Assertions.assertThat(findAllCategory.size()).isEqualTo(2);
-        Assertions.assertThat(findAllCategory.get(0).getChild().get(0).getName()).isEqualTo("소파");
-        Assertions.assertThat(findAllCategory.get(1).getChild().get(0).getName()).isEqualTo("거실페브릭");
+        Assertions.assertThat(findAllCategory.get(0).getChildren().get(0).getTitle()).isEqualTo("소파");
+        Assertions.assertThat(findAllCategory.get(1).getChildren().get(0).getTitle()).isEqualTo("거실페브릭");
     }
 
     @Test
