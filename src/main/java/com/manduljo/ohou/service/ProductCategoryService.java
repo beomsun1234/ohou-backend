@@ -1,6 +1,6 @@
 package com.manduljo.ohou.service;
 
-import com.manduljo.ohou.ApiCommonResponse;
+
 import com.manduljo.ohou.domain.category.ProductCategory;
 import com.manduljo.ohou.domain.category.dto.CategoryCreateRequestDto;
 import com.manduljo.ohou.domain.category.dto.CategoryInfo;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +39,7 @@ public class ProductCategoryService {
                 .collect(Collectors.groupingBy(CategoryInfo::getParentId));
         //루트인것을 가져와서 루트에 자식들을 셋팅해준다.(이방식으로 할 경우 레벨이 늘어날경우 유연하게 대처하기 힘들다 나중에 고려하자)
         List<CategoryInfo> sub = collect.get("root");
-        sub.forEach(categoryInfo -> categoryInfo.setChild(collect.get(categoryInfo.getId())));
+        sub.forEach(categoryInfo -> categoryInfo.setChildren(collect.get(categoryInfo.getKey())));
         return sub;
     }
 

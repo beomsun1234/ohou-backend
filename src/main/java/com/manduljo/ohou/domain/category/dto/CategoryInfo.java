@@ -15,15 +15,15 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class CategoryInfo implements Serializable {
-    private String id;
-    private String name;
+    private String title;
+    private String key;
     private String parentId;
-    private List<CategoryInfo> child = new ArrayList<>();
+    private List<CategoryInfo> children = new ArrayList<>();
 
     @Builder
     public CategoryInfo(ProductCategory entity){
-        this.id=entity.getId();
-        this.name = entity.getName();
+        this.title = entity.getName();
+        this.key=entity.getId();
         if(entity.getParentCategory() == null){
             this.parentId = "root";
         }
