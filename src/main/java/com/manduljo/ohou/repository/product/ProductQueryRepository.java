@@ -62,6 +62,7 @@ public class ProductQueryRepository {
                 .where(containsProductName(searchText)
                         .or(containsCategoryName(searchText))
                         .or(containsParentCategoryName(searchText)))
+                .orderBy(product.createdDate.desc())
                 .fetch();
     }
     //-------------------
