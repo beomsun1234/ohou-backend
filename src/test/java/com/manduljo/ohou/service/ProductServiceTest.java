@@ -5,6 +5,7 @@ import com.manduljo.ohou.domain.category.ProductCategory;
 import com.manduljo.ohou.domain.product.Product;
 import com.manduljo.ohou.domain.product.dto.ProductDetail;
 import com.manduljo.ohou.domain.product.dto.ProductInfo;
+import com.manduljo.ohou.domain.product.dto.ProductPageDto;
 import com.manduljo.ohou.repository.category.ProductCategoryQueryRepository;
 import com.manduljo.ohou.repository.product.ProductQueryRepository;
 import com.manduljo.ohou.repository.product.ProductRepository;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -51,27 +53,30 @@ class ProductServiceTest {
     @DisplayName("카테고리id별 검색")
     void test_findProductByCategoryId(){
         //given
-        Pageable pageRequest = PageRequest.of(0, 5);
+        Pageable pageRequest = PageRequest.of(0, 15);
         List<Product> products = new ArrayList<>();
+
         Product product = Product.builder().id(1L).name("테스트").price(20000)
                 .productCategory(ProductCategory.builder().id("0_1").parentCategory(ProductCategory.builder().id("0").build()).build()).build();
         Product product2 = Product.builder().id(2L).name("테스트2").price(30000)
                 .productCategory(ProductCategory.builder().id("0_1").parentCategory(ProductCategory.builder().id("0").build()).build()).build();
         products.add(product);
         products.add(product2);
-        given(productQueryRepository.findByCategoryId(any(),anyString())).willReturn(products);
+        PageImpl<Product> pageProducts = new PageImpl<>(products, pageRequest, 2);
+        given(productQueryRepository.findByCategoryId(any(),anyString())).willReturn(pageProducts);
         String fakeCategoryId = "0_1";
         //when
-        List<ProductInfo> productInfos = productService.findProductByCategoryId(fakeCategoryId, pageRequest);
+        ProductPageDto productInfos = productService.findProductByCategoryId(fakeCategoryId, pageRequest);
         //then
-        Assertions.assertThat(productInfos.size()).isEqualTo(2);
-        Assertions.assertThat(productInfos.get(0).getName()).isEqualTo("테스트");
+        Assertions.assertThat(productInfos.getProductInfos().size()).isEqualTo(2);
+        Assertions.assertThat(productInfos.getProductInfos().get(0).getName()).isEqualTo("테스트");
     }
 
     @Test
     @DisplayName("상품 검색")
     void test_DynamicProductInfo(){
         //given
+        Pageable pageRequest = PageRequest.of(0, 15);
         List<Product> products = new ArrayList<>();
         Product product = Product.builder().id(1L).name("테스트").price(20000)
                 .productCategory(ProductCategory.builder().id("0_1").parentCategory(ProductCategory.builder().id("0").build()).build()).build();
@@ -79,13 +84,14 @@ class ProductServiceTest {
                 .productCategory(ProductCategory.builder().id("0_1").parentCategory(ProductCategory.builder().id("0").build()).build()).build();
         products.add(product);
         products.add(product2);
+        PageImpl<Product> pageProducts = new PageImpl<>(products, pageRequest, 2);
         String searchText = "테스트";
-        given(productQueryRepository.findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(searchText)).willReturn(products);
+        given(productQueryRepository.findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(pageRequest,searchText)).willReturn(pageProducts);
         //when
-        List<ProductInfo> productInfos = productService.getDynamicProductInfo(searchText);
+        ProductPageDto productInfos = productService.getDynamicProductInfo(pageRequest, searchText);
         //then
-        Assertions.assertThat(productInfos.size()).isEqualTo(2);
-        Assertions.assertThat(productInfos.get(0).getName()).isEqualTo("테스트");
+        Assertions.assertThat(productInfos.getProductInfos().size()).isEqualTo(2);
+        Assertions.assertThat(productInfos.getProductInfos().get(0).getName()).isEqualTo("테스트");
     }
 
 
