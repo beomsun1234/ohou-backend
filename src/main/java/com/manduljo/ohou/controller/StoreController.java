@@ -36,7 +36,7 @@ public class StoreController {
     @GetMapping("store")
     public ApiCommonResponse getProductInfoAndCategoryInfo(@RequestParam(name = "category",defaultValue = "0")String id
                                                             ,@RequestParam(defaultValue = "0") int page) {
-        Pageable pageRequest = PageRequest.of(page, 5);
+        Pageable pageRequest = PageRequest.of(page, 15);
         Map<String, Object> data = new HashMap<>();
         log.info("offset={}",pageRequest.getOffset());
         log.info("pagenum={}", pageRequest.getPageNumber());

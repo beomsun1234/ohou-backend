@@ -3,6 +3,8 @@ package com.manduljo.ohou.controller;
 import com.manduljo.ohou.ApiCommonResponse;
 import com.manduljo.ohou.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +31,13 @@ public class ProductController {
      * @return
      */
     @GetMapping("products/search")
-    public ApiCommonResponse getDynamicProductInfo(@RequestParam(name = "search", required = false, defaultValue = "") String searchText) {
+    public ApiCommonResponse getDynamicProductInfo(@RequestParam(name = "search", required = false, defaultValue = "") String searchText
+                                                    ,@RequestParam(defaultValue = "0") int page) {
+        Pageable pageRequest = PageRequest.of(page, 15);
         return ApiCommonResponse.builder()
                 .status("조회 성공")
                 .message("조회 성공")
-                .data(productService.getDynamicProductInfo(searchText))
+                .data(productService.getDynamicProductInfo(pageRequest,searchText))
                 .build();
     }
 
