@@ -5,6 +5,7 @@ import com.manduljo.ohou.domain.category.ProductCategory;
 import com.manduljo.ohou.domain.product.Product;
 import com.manduljo.ohou.domain.product.dto.ProductDetail;
 import com.manduljo.ohou.domain.product.dto.ProductInfo;
+import com.manduljo.ohou.domain.product.dto.ProductPageDto;
 import com.manduljo.ohou.repository.category.ProductCategoryQueryRepository;
 import com.manduljo.ohou.repository.product.ProductRepository;
 import com.manduljo.ohou.repository.product.ProductQueryRepository;
@@ -47,13 +48,18 @@ public class ProductService {
      * @param id
      * @return
      */
-    @Cacheable(value = "products", key = "{#id,#pageable.pageNumber}", unless = "#result.size()<0")
+    @Cacheable(value = "products", key = "{#id,#pageable.pageNumber}", unless = "#result == null")
     @Transactional(readOnly = true)
-    public List<ProductInfo> findProductByCategoryId(String id, Pageable pageable){
-        return productQueryRepository.findByCategoryId(pageable, id)
-                .stream()
+    public ProductPageDto findProductByCategoryId(String id, Pageable pageable){
+        Page<Product> products = productQueryRepository.findByCategoryId(pageable, id);
+
+        List<ProductInfo> productInfos = products.getContent().stream()
                 .map(product -> ProductInfo.builder().product(product).build())
                 .collect(Collectors.toList());
+
+        return ProductPageDto.builder().productInfoList(productInfos)
+                .totalCount((int) products.getTotalElements())
+                .totalPage(products.getTotalPages()).build();
     }
 
     /**
@@ -61,13 +67,19 @@ public class ProductService {
      * @param searchText
      * @return
      */
-    @Cacheable(value = "products", key = "#searchText", unless = "#result.size()<20")
+    @Cacheable(value = "products", key = "{#searchText, #pageable.pageNumber}", unless = "#result == null")
     @Transactional(readOnly = true)
-    public List<ProductInfo> getDynamicProductInfo(String searchText){
-        return productQueryRepository.findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(searchText)
+    public ProductPageDto getDynamicProductInfo(Pageable pageable,String searchText){
+        Page<Product> findProducts = productQueryRepository.findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(pageable, searchText);
+
+        List<ProductInfo> productInfos = findProducts.getContent()
                 .stream()
                 .map(product -> ProductInfo.builder().product(product).build())
                 .collect(Collectors.toList());
+
+        return ProductPageDto.builder().productInfoList(productInfos)
+                .totalCount((int) findProducts.getTotalElements())
+                .totalPage(findProducts.getTotalPages()).build();
     }
 
 

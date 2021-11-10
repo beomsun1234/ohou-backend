@@ -39,31 +39,36 @@ public class ProductQueryRepository {
                 .fetch();
     }
 
-    //리미트30
-    public List<Product> findByCategoryId(Pageable pageable,String id){
+    //리미트15
+    public Page<Product> findByCategoryId(Pageable pageable,String id){
         QueryResults<Product> results = queryFactory
                 .selectFrom(product)
                 .where(eqCategoryId(id))
                 .orderBy(product.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(5)
+                .limit(15)
                 .fetchResults();
         List<Product> findProducts = results.getResults();
         long total = results.getTotal();
-        return findProducts;
+        return new PageImpl<>(findProducts,pageable,total);
     }
     //-------------------------
 
 
     //동적쿼리 상품이름, 카테고리이름 검색
-    public List<Product> findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(String searchText){
-        return queryFactory
+    public Page<Product> findByProdocutNameOrCategoryNameOrParentCategoryNameContaining(Pageable pageable, String searchText){
+        QueryResults<Product> productQueryResults = queryFactory
                 .selectFrom(product)
                 .where(containsProductName(searchText)
                         .or(containsCategoryName(searchText))
                         .or(containsParentCategoryName(searchText)))
                 .orderBy(product.createdDate.desc())
-                .fetch();
+                .offset(pageable.getOffset())
+                .limit(15)
+                .fetchResults();
+        List<Product> findProducts = productQueryResults.getResults();
+        long total = productQueryResults.getTotal();
+        return new PageImpl<>(findProducts,pageable,total);
     }
     //-------------------
 
