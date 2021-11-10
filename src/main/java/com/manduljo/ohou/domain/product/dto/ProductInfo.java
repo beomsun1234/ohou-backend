@@ -16,8 +16,6 @@ public class ProductInfo implements Serializable {
     private String name;
     private int price;
     private String thumbnailImage;
-
-
     @Builder
     public ProductInfo(Product product){
         this.id = product.getId();
