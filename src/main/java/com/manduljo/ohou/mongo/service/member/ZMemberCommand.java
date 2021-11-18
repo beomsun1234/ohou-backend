@@ -2,7 +2,7 @@ package com.manduljo.ohou.mongo.service.member;
 
 import lombok.*;
 
-public class MMemberCommand {
+public class ZMemberCommand {
 
   @Getter
   @NoArgsConstructor

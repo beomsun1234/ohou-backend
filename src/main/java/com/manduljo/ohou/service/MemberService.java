@@ -5,16 +5,13 @@ import com.manduljo.ohou.domain.member.dto.MemberInfo;
 import com.manduljo.ohou.domain.member.dto.MemberJoinRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdateInfoRequestDto;
 import com.manduljo.ohou.domain.member.dto.MemberUpdatePasswordDto;
-import com.manduljo.ohou.oauth2.CustomUserDetails;
 import com.manduljo.ohou.repository.member.MemberRepository;
 import com.manduljo.ohou.util.ImageUtil;
-import com.manduljo.ohou.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,7 +73,7 @@ public class MemberService {
         if(!imageUtil.checkContentType(memberUpdateRequestDto.getProfileImage().getContentType())){
             throw new IOException("잘못된 컨텐츠입니다.");
         }
-        String imagePath = imageUtil.genreateImagePath(member.getId().toString(), memberUpdateRequestDto.getProfileImage());
+        String imagePath = imageUtil.generateImagePath(member.getId().toString(), memberUpdateRequestDto.getProfileImage());
         return MemberInfo.builder().entity(memberRepository
                 .save(member.updateMyInfo(memberUpdateRequestDto.getNickname(), memberUpdateRequestDto.getGender(), imagePath, memberUpdateRequestDto.getIntroduce())))
                 .build();

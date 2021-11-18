@@ -1,17 +1,15 @@
 package com.manduljo.ohou.mongo.domain;
 
-import com.manduljo.ohou.mongo.domain.member.MMember;
+import com.manduljo.ohou.mongo.domain.member.ZMember;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 public class AuditMetadata {
 
   @CreatedBy
-  private MMember mMember;
+  private ZMember member;
 
   @CreatedDate
   private Instant createdDate;

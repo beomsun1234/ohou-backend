@@ -3,7 +3,7 @@ package com.manduljo.ohou.mongo.controller.member;
 import lombok.Getter;
 import lombok.ToString;
 
-public class MMemberDto {
+public class ZMemberDto {
 
   @Getter
   @ToString

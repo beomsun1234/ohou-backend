@@ -1,0 +1,3 @@
+### GET categories
+GET http://localhost:8080/mongo-api/category
+Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
