@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("api")
 public class CartController {
-    private final OrderService orderService;
     private final CartService cartService;
-
 
     /**
      * 카트 생성 및 추가 및 업데이트
