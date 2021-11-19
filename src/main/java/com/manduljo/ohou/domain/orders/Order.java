@@ -29,12 +29,16 @@ public class Order extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Embedded
+    private  ShippingAddress shippingAddress;
+
     @Builder
-    public Order(Member member, List<OrderItem> orderItem){
+    public Order(Member member, List<OrderItem> orderItem,ShippingAddress shippingAddress){
         this.member = member;
         this.orderItems = orderItem;
         addOrderItems(orderItem);
         this.price = getTotalPrice();
+        this.shippingAddress = shippingAddress;
     }
 
     public void addOrderItems(List<OrderItem> orderItem){
