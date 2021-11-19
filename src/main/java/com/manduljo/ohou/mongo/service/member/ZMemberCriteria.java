@@ -2,7 +2,7 @@ package com.manduljo.ohou.mongo.service.member;
 
 import lombok.*;
 
-public class MMemberCriteria {
+public class ZMemberCriteria {
 
   @Getter
   @NoArgsConstructor

@@ -19,7 +19,7 @@ public class ImageUtil {
     @Value("${resources.location}")
     private String resources_location;
 
-    public String genreateImagePath(String id, MultipartFile multipartFile) throws IOException {
+    public String generateImagePath(String id, MultipartFile multipartFile) throws IOException {
         String extension = assignmentExtensionType(Objects.requireNonNull(multipartFile.getContentType()));
         String uuid = UUID.randomUUID().toString();
         File file = new File(resources_location+"MemberProfile/"+id);

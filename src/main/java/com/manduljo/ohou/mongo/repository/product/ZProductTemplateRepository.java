@@ -6,9 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MProductCategoryTemplateRepository {
+public class ZProductTemplateRepository {
 
   private final MongoTemplate mongoTemplate;
-
 
 }

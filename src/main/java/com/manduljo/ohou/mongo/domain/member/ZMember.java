@@ -17,7 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class MMember {
+public class ZMember {
 
   @MongoId(FieldType.OBJECT_ID)
   private String id;

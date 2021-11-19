@@ -1,3 +1,0 @@
-### GET product categories tree
-GET http://localhost:8080/api/product-categories/tree
-Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
