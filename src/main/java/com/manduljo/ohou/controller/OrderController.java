@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("api/members/{id}/orders")
+    @PostMapping("members/{id}/orders")
     public String createOrder(@PathVariable Long id, @RequestBody OrderDto orderDto){
         log.info("ids={}",orderDto.getProductId().get(0));
         orderService.createOrder(id,orderDto);
         return "주문성공";
     }
 
-    @PostMapping("api/members/{id}/cart/orders")
+    @PostMapping("members/{id}/cart/orders")
     public String createCartOrder(@PathVariable Long id, @RequestBody CartOrderDto cartOrderDto){
         orderService.createCartOrder(id,cartOrderDto);
         return "주문성공";
