@@ -1,5 +1,6 @@
 package com.manduljo.ohou.controller;
 
+import com.manduljo.ohou.ApiCommonResponse;
 import com.manduljo.ohou.domain.cart.dto.CartInfo;
 import com.manduljo.ohou.domain.cart.dto.CartItemAddDto;
 import com.manduljo.ohou.domain.cartItem.dto.CartItemUpdateQuantityDto;
@@ -7,6 +8,7 @@ import com.manduljo.ohou.service.CartService;
 import com.manduljo.ohou.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -23,8 +25,12 @@ public class CartController {
      * @return -> 카트 아이디 반환
      */
     @PostMapping("members/{id}/cart")
-    public Long createOrAddOrUpdateCart(@PathVariable Long id,@RequestBody CartItemAddDto cartItemAddDto){
-        return cartService.createOrAddOrUpdateCart(id, cartItemAddDto);
+    public ApiCommonResponse createOrAddOrUpdateCart(@PathVariable Long id,@RequestBody CartItemAddDto cartItemAddDto){
+        return ApiCommonResponse.builder()
+                .status(String.valueOf(HttpStatus.OK))
+                .data(cartService.createOrAddOrUpdateCart(id, cartItemAddDto))
+                .message("카트 추가 및 업데이트 성공")
+                .build();
     }
 
     /**
@@ -33,8 +39,12 @@ public class CartController {
      * @return
      */
     @GetMapping("members/{id}/cart")
-    public CartInfo getCartInfo(@PathVariable Long id){
-        return cartService.findCartsByMemberId(id);
+    public ApiCommonResponse getCartInfo(@PathVariable Long id){
+        return ApiCommonResponse.builder()
+                .status(String.valueOf(HttpStatus.OK))
+                .message("조히 성공")
+                .data(cartService.findCartsByMemberId(id))
+                .build();
     }
 
     /**
@@ -44,7 +54,11 @@ public class CartController {
      * @return
      */
     @PutMapping("members/{id}/cart")
-    public Long updateCartItemQuantity(@PathVariable Long id, @RequestBody CartItemUpdateQuantityDto cartItemUpdateQuantityDto){
-        return cartService.updateCartItem(id,cartItemUpdateQuantityDto);
+    public ApiCommonResponse updateCartItemQuantity(@PathVariable Long id, @RequestBody CartItemUpdateQuantityDto cartItemUpdateQuantityDto){
+        return ApiCommonResponse.builder()
+                .status(String.valueOf(HttpStatus.OK))
+                .data(cartService.updateCartItem(id,cartItemUpdateQuantityDto))
+                .message("수량 변경 완료")
+                .build();
     }
 }
