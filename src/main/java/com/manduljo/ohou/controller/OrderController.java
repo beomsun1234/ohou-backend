@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("api")
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("members/{id}/orders")
+    @PostMapping("api/members/{id}/orders")
     public String createOrder(@PathVariable Long id, @RequestBody OrderDto orderDto){
         log.info("ids={}",orderDto.getProductId().get(0));
         orderService.createOrder(id,orderDto);
         return "주문성공";
     }
 
-    @PostMapping("members/{id}/cart/orders")
+    @PostMapping("api/members/{id}/cart/orders")
     public String createCartOrder(@PathVariable Long id, @RequestBody CartOrderDto cartOrderDto){
         orderService.createCartOrder(id,cartOrderDto);
         return "주문성공";
