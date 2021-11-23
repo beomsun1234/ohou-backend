@@ -27,7 +27,7 @@ public class ZCategoryService {
       ZCategoryCriteria.FindCategoryInfo categoryInfo = ZCategoryCriteria.FindCategoryInfo.builder()
           .id(category.getId())
           .categoryName((category.getCategoryName()))
-          .parentCategoryId(category.getParentCategoryId())
+          .parentCategoryId(category.getParentCategoryId() == null ? "root" : category.getParentCategoryId()) // mariadb api 와 동일한 형태로 맞추기 위해 root 삽입
           .categoryInfoList(new ArrayList<>())
           .build();
 
