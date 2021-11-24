@@ -23,29 +23,29 @@ public class ZCategoryController {
 
   @GetMapping
   public ApiCommonResponse<ZCategoryDto.FindCategoryResponse> findCategory() {
-    List<ZCategoryCriteria.FindCategoryInfo> categoryInfoList = categoryService.findCategoryInfoList();
-    ZCategoryDto.FindCategoryResponse response = categoryInfoListToFindCategoryResponse(categoryInfoList);
+    ZCategoryCriteria.FindCategoryInfo info = categoryService.findCategoryInfo();
+    ZCategoryDto.FindCategoryResponse response = infoToResponse(info);
     return new ApiCommonResponse<>(String.valueOf(HttpStatus.OK.value()), "카테고리 조회 성공", response);
   }
 
-  private ZCategoryDto.FindCategoryResponse categoryInfoListToFindCategoryResponse(List<ZCategoryCriteria.FindCategoryInfo> categoryInfoList) {
+  private ZCategoryDto.FindCategoryResponse infoToResponse(ZCategoryCriteria.FindCategoryInfo info) {
     return ZCategoryDto.FindCategoryResponse.builder()
-        .categoryList(categoryInfoListToCategoryItemList(categoryInfoList))
+        .categoryList(infoItemListToResponseItemList(info.getCategoryList()))
         .build();
   }
 
-  private List<ZCategoryDto.FindCategoryResponse.CategoryItem> categoryInfoListToCategoryItemList(List<ZCategoryCriteria.FindCategoryInfo> categoryInfoList) {
-    return categoryInfoList.stream()
-        .map(this::categoryInfoToCategoryItem)
+  private List<ZCategoryDto.FindCategoryResponse.Item> infoItemListToResponseItemList(List<ZCategoryCriteria.FindCategoryInfo.Item> infoItemList) {
+    return infoItemList.stream()
+        .map(this::InfoItemToResponseItem)
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private ZCategoryDto.FindCategoryResponse.CategoryItem categoryInfoToCategoryItem(ZCategoryCriteria.FindCategoryInfo categoryInfo) {
-    return ZCategoryDto.FindCategoryResponse.CategoryItem.builder()
-        .id(categoryInfo.getId())
-        .categoryName(categoryInfo.getCategoryName())
-        .parentCategoryId(categoryInfo.getParentCategoryId())
-        .categoryList(categoryInfoListToCategoryItemList(categoryInfo.getCategoryInfoList()))
+  private ZCategoryDto.FindCategoryResponse.Item InfoItemToResponseItem(ZCategoryCriteria.FindCategoryInfo.Item item) {
+    return ZCategoryDto.FindCategoryResponse.Item.builder()
+        .id(item.getId())
+        .categoryName(item.getCategoryName())
+        .parentCategoryId(item.getParentCategoryId())
+        .categoryList(infoItemListToResponseItemList(item.getCategoryList()))
         .build();
   }
 

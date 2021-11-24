@@ -1,10 +1,8 @@
 package com.manduljo.ohou.mongo.controller.category;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.manduljo.ohou.domain.category.dto.CategoryInfo;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ZCategoryDto {
@@ -16,14 +14,14 @@ public class ZCategoryDto {
   @ToString
   public static class FindCategoryResponse {
     @JsonProperty("category")
-    private List<CategoryItem> categoryList;
+    private List<Item> categoryList;
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     @ToString
-    public static class CategoryItem {
+    public static class Item {
       @JsonProperty("key")
       private String id;
 
@@ -34,7 +32,7 @@ public class ZCategoryDto {
       private String parentCategoryId;
 
       @JsonProperty("children")
-      private List<CategoryItem> categoryList;
+      private List<Item> categoryList;
     }
 
   }

@@ -4,6 +4,10 @@ import com.manduljo.ohou.mongo.domain.product.ZProduct;
 import com.manduljo.ohou.mongo.repository.product.ZProductRepository;
 import com.manduljo.ohou.mongo.repository.product.ZProductTemplateRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,16 +21,33 @@ public class ZProductService {
 
   private final ZProductTemplateRepository productTemplateRepository;
 
-  public List<ZProductCriteria.FindProductInfo> findProductInfoList() {
-    List<ZProduct> productList = productRepository.findAll();
-    List<ZProductCriteria.FindProductInfo> productInfoList = productList.stream()
-        .map(product -> ZProductCriteria.FindProductInfo.builder()
-            .id(product.getId())
-            .productName(product.getProductName())
-            .categoryId(product.getCategoryId())
-            .build())
-        .collect(Collectors.toUnmodifiableList());
-    return productInfoList;
+  public ZProductCriteria.GetProductDetailInfo getProductDetailById(String id) {
+    ZProduct product = productRepository.findById(id).orElseThrow();
+    return ZProductCriteria.GetProductDetailInfo.builder()
+        .id(product.getId())
+        .productName(product.getProductName())
+        .price(product.getPrice())
+        .thumbnailImage(product.getThumbnailImage())
+        .productImageList(product.getProductImageList())
+        .build();
   }
 
+  public ZProductCriteria.FindProductBySearchTextPageInfo findProductBySearchTextPageInfo(ZProductCriteria.FindProductBySearchTextCriteria criteria) {
+    Pageable pageable = PageRequest.of(criteria.getPage(), 15, Sort.by(Sort.Order.desc("_id")));
+    Page<ZProduct> productPage = productRepository.findByProductNameContains(criteria.getSearchText(), pageable);
+    return ZProductCriteria.FindProductBySearchTextPageInfo.builder()
+        .totalPage(productPage.getTotalPages())
+        .totalCount((int) productPage.getTotalElements())
+        .productList(productPage.stream()
+            .map(product -> ZProductCriteria.FindProductBySearchTextPageInfo.Item.builder()
+                .id(product.getId())
+                .productName(product.getProductName())
+                .price(product.getPrice())
+                .thumbnailImage(product.getThumbnailImage())
+                .build()
+            )
+            .collect(Collectors.toUnmodifiableList())
+        )
+        .build();
+  }
 }

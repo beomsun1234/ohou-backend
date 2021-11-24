@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.util.List;
+
 @Document(collection = "products")
 @Getter
 @NoArgsConstructor
@@ -18,6 +20,12 @@ public class ZProduct {
   private String id;
 
   private String productName;
+
+  private int price;
+
+  private String thumbnailImage;
+
+  private List<String> productImageList;
 
   @Field(targetType = FieldType.OBJECT_ID)
   private String categoryId;
