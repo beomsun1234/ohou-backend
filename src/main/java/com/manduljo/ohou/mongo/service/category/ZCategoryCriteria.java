@@ -1,7 +1,5 @@
 package com.manduljo.ohou.mongo.service.category;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.manduljo.ohou.mongo.controller.category.ZCategoryDto;
 import lombok.*;
 
 import java.util.List;

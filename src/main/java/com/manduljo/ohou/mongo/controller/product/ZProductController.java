@@ -5,6 +5,8 @@ import com.manduljo.ohou.mongo.constant.AcceptType;
 import com.manduljo.ohou.mongo.service.product.ZProductCriteria;
 import com.manduljo.ohou.mongo.service.product.ZProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,37 +39,37 @@ public class ZProductController {
 
   @GetMapping("/search")
   public ApiCommonResponse<ZProductDto.FindProductResponse> findProductBySearchText(
-      @RequestParam String searchText,
-      @RequestParam(defaultValue = "0") int page
+      @RequestParam(name = "search", required = false) String searchText,
+      @RequestParam int page
   ) {
     ZProductCriteria.FindProductBySearchTextCriteria criteria = makeFindProductBySearchTextCriteria(searchText, page);
     ZProductCriteria.FindProductBySearchTextPageInfo info = productService.findProductBySearchTextPageInfo(criteria);
-    ZProductDto.FindProductResponse response = findProductBySearchTextPageInfoToFindProductResponse(info);
+    ZProductDto.FindProductResponse response = toFindProductResponse(info);
     return new ApiCommonResponse<>(String.valueOf(HttpStatus.OK.value()), "상품 검색 성공", response);
   }
 
   private ZProductCriteria.FindProductBySearchTextCriteria makeFindProductBySearchTextCriteria(String searchText, int page) {
     return ZProductCriteria.FindProductBySearchTextCriteria.builder()
         .searchText(searchText)
-        .page(page)
+        .pageable(PageRequest.of(page, 15, Sort.by(Sort.Order.desc("_id"))))
         .build();
   }
 
-  private ZProductDto.FindProductResponse findProductBySearchTextPageInfoToFindProductResponse(ZProductCriteria.FindProductBySearchTextPageInfo info) {
+  private ZProductDto.FindProductResponse toFindProductResponse(ZProductCriteria.FindProductBySearchTextPageInfo info) {
     return ZProductDto.FindProductResponse.builder()
         .totalPage(info.getTotalPage())
         .totalCount(info.getTotalCount())
-        .productList(infoItemListToResponseItemList(info.getProductList()))
+        .productList(toResponseItemList(info.getProductList()))
         .build();
   }
 
-  private List<ZProductDto.FindProductResponse.Item> infoItemListToResponseItemList(List<ZProductCriteria.FindProductBySearchTextPageInfo.Item> infoItemList) {
+  private List<ZProductDto.FindProductResponse.Item> toResponseItemList(List<ZProductCriteria.FindProductBySearchTextPageInfo.Item> infoItemList) {
     return infoItemList.stream()
-        .map(this::infoItemToResponseItem)
+        .map(this::toResponseItem)
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private ZProductDto.FindProductResponse.Item infoItemToResponseItem(ZProductCriteria.FindProductBySearchTextPageInfo.Item item) {
+  private ZProductDto.FindProductResponse.Item toResponseItem(ZProductCriteria.FindProductBySearchTextPageInfo.Item item) {
     return ZProductDto.FindProductResponse.Item.builder()
         .id(item.getId())
         .productName(item.getProductName())
