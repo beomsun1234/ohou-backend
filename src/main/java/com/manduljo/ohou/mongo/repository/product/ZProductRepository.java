@@ -13,4 +13,6 @@ public interface ZProductRepository extends MongoRepository<ZProduct, String> {
 
   Page<ZProduct> findByCategoryIdIn(List<String> categoryIdList, Pageable pageable);
 
+  List<ZProduct> findByIdIn(List<String> productIdList);
+
 }
