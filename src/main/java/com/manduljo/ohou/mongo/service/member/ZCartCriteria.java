@@ -11,7 +11,7 @@ public class ZCartCriteria {
   @AllArgsConstructor
   @Builder
   @ToString
-  public static class FindCartByMemberIdInfo {
+  public static class FindCartItemByMemberIdInfo {
     private int totalPrice;
     private List<Item> cartItemList;
 

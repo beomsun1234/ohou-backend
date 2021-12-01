@@ -4,6 +4,7 @@ import com.manduljo.ohou.mongo.domain.member.ZCartItem;
 import com.manduljo.ohou.mongo.domain.member.ZMember;
 import com.manduljo.ohou.mongo.domain.product.ZProduct;
 import com.manduljo.ohou.mongo.repository.member.ZMemberRepository;
+import com.manduljo.ohou.mongo.repository.member.ZMemberTemplateRepository;
 import com.manduljo.ohou.mongo.repository.product.ZProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,11 @@ import java.util.stream.Collectors;
 public class ZCartService {
 
   private final ZMemberRepository memberRepository;
+  private final ZMemberTemplateRepository memberTemplateRepository;
 
   private final ZProductRepository productRepository;
 
-  public ZCartCriteria.FindCartByMemberIdInfo findCartByMemberId(String memberId) {
+  public ZCartCriteria.FindCartItemByMemberIdInfo findCartItemByMemberId(String memberId) {
     ZMember member = memberRepository.findById(memberId).orElseThrow();
     List<ZCartItem> cartItemList = member.getCartItemList();
 
@@ -34,21 +36,21 @@ public class ZCartService {
     return toInfo(cartItemList, productMap);
   }
 
-  private ZCartCriteria.FindCartByMemberIdInfo toInfo(List<ZCartItem> cartItemList, Map<String, ZProduct> productMap) {
-    List<ZCartCriteria.FindCartByMemberIdInfo.Item> infoItemList = cartItemList.stream()
+  private ZCartCriteria.FindCartItemByMemberIdInfo toInfo(List<ZCartItem> cartItemList, Map<String, ZProduct> productMap) {
+    List<ZCartCriteria.FindCartItemByMemberIdInfo.Item> infoItemList = cartItemList.stream()
         .map(cartItem -> toInfoItem(cartItem, productMap.get(cartItem.getProductId())))
         .collect(Collectors.toUnmodifiableList());
 
-    int totalPrice = infoItemList.stream().mapToInt(ZCartCriteria.FindCartByMemberIdInfo.Item::getTotalPrice).sum();
+    int totalPrice = infoItemList.stream().mapToInt(ZCartCriteria.FindCartItemByMemberIdInfo.Item::getTotalPrice).sum();
 
-    return ZCartCriteria.FindCartByMemberIdInfo.builder()
+    return ZCartCriteria.FindCartItemByMemberIdInfo.builder()
         .totalPrice(totalPrice)
         .cartItemList(infoItemList)
         .build();
   }
 
-  private ZCartCriteria.FindCartByMemberIdInfo.Item toInfoItem(ZCartItem cartItem, ZProduct product) {
-    return ZCartCriteria.FindCartByMemberIdInfo.Item.builder()
+  private ZCartCriteria.FindCartItemByMemberIdInfo.Item toInfoItem(ZCartItem cartItem, ZProduct product) {
+    return ZCartCriteria.FindCartItemByMemberIdInfo.Item.builder()
         .cartItemId(cartItem.getId())
         .productId(cartItem.getProductId())
         .productName(product.getProductName())
@@ -58,4 +60,10 @@ public class ZCartService {
         .totalPrice(product.getPrice() * cartItem.getProductQuantity())
         .build();
   }
+
+  public String addCartItem(ZCartCommand.AddCartItemCommand command) {
+    String cartItemId = memberTemplateRepository.addCartItem(command);
+    return cartItemId == null ? memberTemplateRepository.updateCartItem(command) : cartItemId;
+  }
+
 }

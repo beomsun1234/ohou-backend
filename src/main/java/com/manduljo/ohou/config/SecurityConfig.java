@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                    .requestMatchers(request -> !request.getHeader("accept").isBlank() && request.getHeader("accept").contains(AcceptType.API_V1)).permitAll()
+                    .antMatchers("/mongo-api/**").permitAll()
                     .antMatchers("/api/auth/**").permitAll()
                     .antMatchers("/api/join").permitAll()
                     .antMatchers("/api/products/**").permitAll()

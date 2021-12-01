@@ -25,4 +25,16 @@ Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
   "email": "name3@email.com"
 }
 
-###
+### GET find cart item by id
+GET http://localhost:8080/mongo-api/members/61a7ad5707fe686bf8a2fb76/cart
+Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
+
+### POST add cart item
+POST http://localhost:8080/mongo-api/members/61a7ad5707fe686bf8a2fb76/cart
+Content-Type: application/json
+Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
+
+{
+  "productId": "61a7a5246e57565fe532a3fe",
+  "quantity": 1
+}

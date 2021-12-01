@@ -12,11 +12,11 @@ public class ZCartDto {
   @AllArgsConstructor
   @Builder
   @ToString
-  public static class FindCartByMemberIdResponse {
+  public static class FindCartItemByMemberIdResponse {
     private int totalPrice;
 
     @JsonProperty("cartItems")
-    private List<FindCartByMemberIdResponse.Item> cartItemList;
+    private List<FindCartItemByMemberIdResponse.Item> cartItemList;
 
     @Getter
     @NoArgsConstructor
@@ -34,6 +34,17 @@ public class ZCartDto {
       private int quantity;
       private int totalPrice;
     }
+  }
+
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
+  @ToString
+  public static class AddCartItemRequest {
+    private String productId;
+    @JsonProperty("quantity")
+    private int productQuantity;
   }
 
 }
