@@ -61,9 +61,12 @@ public class ZCartService {
         .build();
   }
 
-  public String addCartItem(ZCartCommand.AddCartItemCommand command) {
-    String cartItemId = memberTemplateRepository.addCartItem(command);
-    return cartItemId == null ? memberTemplateRepository.updateCartItem(command) : cartItemId;
+  public String createCartItem(ZCartCommand.CreateCartItemCommand command) {
+    String cartItemId = memberTemplateRepository.createCartItem(command);
+    return cartItemId == null ? memberTemplateRepository.updateCartItemProductQuantity(command) : cartItemId;
   }
 
+  public String updateCartItemProductQuantity(ZCartCommand.UpdateCartItemProductQuantityCommand command) {
+    return memberTemplateRepository.updateCartItemProductQuantity(command);
+  }
 }

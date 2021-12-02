@@ -52,20 +52,38 @@ public class ZCartController {
   }
 
   @PostMapping("/{id}/cart")
-  public ApiCommonResponse<String> addCartItem(
+  public ApiCommonResponse<String> createCartItem(
       @PathVariable(name = "id") String memberId,
-      @RequestBody ZCartDto.AddCartItemRequest addCartItemRequest
+      @RequestBody ZCartDto.CreateCartItemRequest request
   ) {
-    ZCartCommand.AddCartItemCommand command = toCommand(memberId, addCartItemRequest);
-    String cartItemId = cartService.addCartItem(command);
+    ZCartCommand.CreateCartItemCommand command = toCommand(memberId, request);
+    String cartItemId = cartService.createCartItem(command);
     return new ApiCommonResponse<>(String.valueOf(HttpStatus.OK.value()), "카트 아이템 추가 성공", cartItemId);
   }
 
-  private ZCartCommand.AddCartItemCommand toCommand(String memberId, ZCartDto.AddCartItemRequest addCartItemRequest) {
-    return ZCartCommand.AddCartItemCommand.builder()
+  private ZCartCommand.CreateCartItemCommand toCommand(String memberId, ZCartDto.CreateCartItemRequest request) {
+    return ZCartCommand.CreateCartItemCommand.builder()
         .memberId(memberId)
-        .productId(addCartItemRequest.getProductId())
-        .productQuantity(addCartItemRequest.getProductQuantity())
+        .productId(request.getProductId())
+        .productQuantity(request.getProductQuantity())
+        .build();
+  }
+
+  @PutMapping("/{id}/cart")
+  public ApiCommonResponse<String> updateCartItemQuantity(
+      @PathVariable(name = "id") String memberId,
+      @RequestBody ZCartDto.UpdateCartItemProductQuantityRequest request
+  ) {
+    ZCartCommand.UpdateCartItemProductQuantityCommand command = toCommand(memberId, request);
+    String cartItemId = cartService.updateCartItemProductQuantity(command);
+    return new ApiCommonResponse<>(String.valueOf(HttpStatus.OK.value()), "카트 아이템 수량 변경 성공", cartItemId);
+  }
+
+  private ZCartCommand.UpdateCartItemProductQuantityCommand toCommand(String memberId, ZCartDto.UpdateCartItemProductQuantityRequest request) {
+    return ZCartCommand.UpdateCartItemProductQuantityCommand.builder()
+        .memberId(memberId)
+        .cartItemId(request.getCartItemId())
+        .productQuantity(request.getProductQuantity())
         .build();
   }
 }

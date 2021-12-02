@@ -46,7 +46,7 @@ public class ZMemberTemplateRepository {
     return mongoTemplate.save(member);
   }
 
-  public String addCartItem(ZCartCommand.AddCartItemCommand command) {
+  public String createCartItem(ZCartCommand.CreateCartItemCommand command) {
     ZCartItem cartItem = toCartItem(command);
     UpdateResult result = mongoTemplate.update(ZMember.class)
         .matching(Criteria.where("_id").is(new ObjectId(command.getMemberId())).and("cart_item_list.product_id").ne(new ObjectId(command.getProductId())))
@@ -55,7 +55,7 @@ public class ZMemberTemplateRepository {
     return result.getModifiedCount() > 0 ? cartItem.getId() : null;
   }
 
-  private ZCartItem toCartItem(ZCartCommand.AddCartItemCommand command) {
+  private ZCartItem toCartItem(ZCartCommand.CreateCartItemCommand command) {
     return ZCartItem.builder()
         .id(new ObjectId().toHexString())
         .productId(command.getProductId())
@@ -63,7 +63,7 @@ public class ZMemberTemplateRepository {
         .build();
   }
 
-  public String updateCartItem(ZCartCommand.AddCartItemCommand command) {
+  public String updateCartItemProductQuantity(ZCartCommand.CreateCartItemCommand command) {
     ZMember member = mongoTemplate.findAndModify(
         Query.query(Criteria.where("_id").is(new ObjectId(command.getMemberId())).and("cart_item_list.product_id").is(new ObjectId(command.getProductId()))),
         new Update().inc("cart_item_list.$.product_quantity", command.getProductQuantity()),
@@ -71,6 +71,19 @@ public class ZMemberTemplateRepository {
     );
     ZCartItem updatedCartItem = Objects.requireNonNull(member).getCartItemList().stream()
         .filter(cartItem -> cartItem.getProductId().equals(command.getProductId()))
+        .findFirst()
+        .orElse(null);
+    return updatedCartItem == null ? null : updatedCartItem.getId();
+  }
+
+  public String updateCartItemProductQuantity(ZCartCommand.UpdateCartItemProductQuantityCommand command) {
+    ZMember member = mongoTemplate.findAndModify(
+        Query.query(Criteria.where("cart_item_list._id").is(new ObjectId(command.getCartItemId())).and("_id").is(new ObjectId(command.getMemberId()))),
+        new Update().set("cart_item_list.$.product_quantity", command.getProductQuantity()),
+        ZMember.class
+    );
+    ZCartItem updatedCartItem = Objects.requireNonNull(member).getCartItemList().stream()
+        .filter(cartItem -> cartItem.getId().equals(command.getCartItemId()))
         .findFirst()
         .orElse(null);
     return updatedCartItem == null ? null : updatedCartItem.getId();

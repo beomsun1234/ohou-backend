@@ -41,8 +41,19 @@ public class ZCartDto {
   @AllArgsConstructor
   @Builder
   @ToString
-  public static class AddCartItemRequest {
+  public static class CreateCartItemRequest {
     private String productId;
+    @JsonProperty("quantity")
+    private int productQuantity;
+  }
+
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
+  @ToString
+  public static class UpdateCartItemProductQuantityRequest {
+    private String cartItemId;
     @JsonProperty("quantity")
     private int productQuantity;
   }

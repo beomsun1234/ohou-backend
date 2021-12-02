@@ -1,11 +1,11 @@
-### GET product by id
+### GET find product by id
 GET http://localhost:8080/mongo-api/products/619e2a221c71357bc5a4dc72
 Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
 
-### GET products by search text
+### GET find product list by search text
 GET http://localhost:8080/mongo-api/products/search?search=소파&page=0
 Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
 
-### GET products by category
+### GET find product list by category
 GET http://localhost:8080/mongo-api/store?category=61a3ac109a7e455a429e3442&page=0
 Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
