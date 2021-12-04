@@ -4,6 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 공통 응답
+ * @param <T>
+ */
 @Getter
 @NoArgsConstructor
 public class ApiCommonResponse<T> {
