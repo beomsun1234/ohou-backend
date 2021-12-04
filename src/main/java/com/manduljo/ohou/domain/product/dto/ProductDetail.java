@@ -14,7 +14,9 @@ public class ProductDetail {
     private String name;
     private int price;
     private String thumbnail;
-    private List<String> productImg;
+    private List<String> leftCoverImages;
+    private String mainImages;
+    private String productDetailImage;
     // private List<String>productImage -> 상품 상세 이미지는 나중에
     @Builder
     public ProductDetail(Product entity){
@@ -22,6 +24,8 @@ public class ProductDetail {
         this.name = entity.getName();
         this.price = entity.getPrice();
         this.thumbnail = entity.getThumbnailImage();
-        this.productImg = entity.getProductImage();
+        this.leftCoverImages = entity.getLeftCoverImage();
+        this.mainImages = entity.getMainImage();
+        this.productDetailImage = entity.getProductDetailImage();
     }
 }
