@@ -3,13 +3,14 @@ package com.manduljo.ohou.mongo.domain.member;
 import com.manduljo.ohou.domain.member.Gender;
 import com.manduljo.ohou.domain.member.LoginType;
 import com.manduljo.ohou.domain.member.Role;
-import com.manduljo.ohou.mongo.domain.AuditMetadata;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import java.util.List;
 
 @Document(collection = "members")
 @Getter
@@ -35,6 +36,7 @@ public class ZMember {
 
   @Enumerated(EnumType.STRING)
   private LoginType loginType;
+  private List<ZCartItem> cartItemList;
   // private AuditMetadata auditMetadata;
 
 }

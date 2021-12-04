@@ -12,10 +12,19 @@ public class ZCategoryCriteria {
   @Builder
   @ToString
   public static class FindCategoryInfo {
-    private String id;
-    private String categoryName;
-    private String parentCategoryId;
-    private List<ZCategoryCriteria.FindCategoryInfo> categoryInfoList;
+    private List<Item> categoryList;
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @ToString
+    public static class Item {
+      private String id;
+      private String categoryName;
+      private String parentCategoryId;
+      private List<Item> categoryList;
+    }
   }
 
 }

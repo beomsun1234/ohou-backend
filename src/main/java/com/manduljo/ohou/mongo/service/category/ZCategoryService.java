@@ -16,31 +16,33 @@ public class ZCategoryService {
 
   private final ZCategoryTemplateRepository categoryTemplateRepository;
 
-  public List<ZCategoryCriteria.FindCategoryInfo> findCategoryInfoList() {
-    Map<String, ZCategoryCriteria.FindCategoryInfo> categoryInfoMap = new HashMap<>();
-    List<ZCategoryCriteria.FindCategoryInfo> rootCategoryInfoList = new ArrayList<>();
+  public ZCategoryCriteria.FindCategoryInfo findCategoryInfo() {
+    Map<String, ZCategoryCriteria.FindCategoryInfo.Item> categoryInfoMap = new HashMap<>();
+    List<ZCategoryCriteria.FindCategoryInfo.Item> rootCategoryInfoItemList = new ArrayList<>();
 
     List<ZCategory> categoryList = categoryRepository.findAll();
     categoryList.sort(Comparator.comparingInt(o -> o.getAncestorIdList().size()));
 
     for (ZCategory category : categoryList) {
-      ZCategoryCriteria.FindCategoryInfo categoryInfo = ZCategoryCriteria.FindCategoryInfo.builder()
+      ZCategoryCriteria.FindCategoryInfo.Item item = ZCategoryCriteria.FindCategoryInfo.Item.builder()
           .id(category.getId())
           .categoryName((category.getCategoryName()))
-          .parentCategoryId(category.getParentCategoryId())
-          .categoryInfoList(new ArrayList<>())
+          .parentCategoryId(category.getParentCategoryId() == null ? "root" : category.getParentCategoryId()) // mariadb api 와 동일한 형태로 맞추기 위해 root 삽입
+          .categoryList(new ArrayList<>())
           .build();
 
-      categoryInfoMap.put(categoryInfo.getId(), categoryInfo);
+      categoryInfoMap.put(item.getId(), item);
 
       if (category.getParentCategoryId() == null) {
-        rootCategoryInfoList.add(categoryInfo);
+        rootCategoryInfoItemList.add(item);
       } else {
-        categoryInfoMap.get(category.getParentCategoryId()).getCategoryInfoList().add(categoryInfo);
+        categoryInfoMap.get(category.getParentCategoryId()).getCategoryList().add(item);
       }
     }
 
-    return rootCategoryInfoList;
+    return ZCategoryCriteria.FindCategoryInfo.builder()
+        .categoryList(rootCategoryInfoItemList)
+        .build();
   }
 
 }

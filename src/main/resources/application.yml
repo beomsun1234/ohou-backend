@@ -23,5 +23,4 @@ logging:
   level:
     jdbc:
       sqlonly=debug: debug
-
-logging.level.org.springframework.data.mongodb: DEBUG
+    org.springframework.data.mongodb: DEBUG
