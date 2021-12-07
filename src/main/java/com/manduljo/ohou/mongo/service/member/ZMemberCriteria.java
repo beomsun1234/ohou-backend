@@ -9,7 +9,7 @@ public class ZMemberCriteria {
   @AllArgsConstructor
   @Builder
   @ToString
-  public static class FindRequest {
+  public static class FindByIdCriteria {
     private String name;
   }
   

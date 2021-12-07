@@ -24,8 +24,8 @@ public class ZMemberController {
     return ResponseEntity.ok(userService.findAll(convertCriteria(request)));
   }
 
-  private ZMemberCriteria.FindRequest convertCriteria(ZMemberDto.FindRequest request) {
-    return request == null ? new ZMemberCriteria.FindRequest() : ZMemberCriteria.FindRequest.builder()
+  private ZMemberCriteria.FindByIdCriteria convertCriteria(ZMemberDto.FindRequest request) {
+    return request == null ? new ZMemberCriteria.FindByIdCriteria() : ZMemberCriteria.FindByIdCriteria.builder()
         .name(request.getName())
         .build();
   }
@@ -38,7 +38,7 @@ public class ZMemberController {
   @PostMapping
   public ResponseEntity<Void> save(@RequestBody ZMemberDto.SaveRequest request) {
     String id = userService.save(
-        ZMemberCommand.SaveRequest.builder()
+        ZMemberCommand.CreateMemberCommand.builder()
             .name(request.getName())
             .email(request.getEmail())
             .build()

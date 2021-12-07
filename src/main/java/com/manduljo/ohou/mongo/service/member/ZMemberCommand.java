@@ -9,7 +9,7 @@ public class ZMemberCommand {
   @AllArgsConstructor
   @Builder
   @ToString
-  public static class SaveRequest {
+  public static class CreateMemberCommand {
     private String name;
     private String email;
   }

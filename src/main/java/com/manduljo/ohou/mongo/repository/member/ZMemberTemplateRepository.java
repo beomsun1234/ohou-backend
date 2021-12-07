@@ -2,7 +2,7 @@ package com.manduljo.ohou.mongo.repository.member;
 
 import com.manduljo.ohou.mongo.domain.member.ZCartItem;
 import com.manduljo.ohou.mongo.domain.member.ZMember;
-import com.manduljo.ohou.mongo.service.member.ZCartCommand;
+import com.manduljo.ohou.mongo.service.cart.ZCartCommand;
 import com.manduljo.ohou.mongo.service.member.ZMemberCriteria;
 import com.mongodb.client.result.UpdateResult;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class ZMemberTemplateRepository {
 
   private final MongoTemplate mongoTemplate;
 
-  public List<ZMember> findAll(ZMemberCriteria.FindRequest criteria) {
+  public List<ZMember> findAll(ZMemberCriteria.FindByIdCriteria criteria) {
     Query query = new Query();
     nameIs(query, criteria.getName());
 

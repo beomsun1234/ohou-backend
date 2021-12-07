@@ -1,4 +1,4 @@
-package com.manduljo.ohou.mongo.controller.member;
+package com.manduljo.ohou.mongo.controller.cart;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

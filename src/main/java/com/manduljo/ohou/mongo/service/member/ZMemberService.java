@@ -16,7 +16,7 @@ public class ZMemberService {
 
   private final ZMemberTemplateRepository memberTemplateRepository;
 
-  public List<ZMember> findAll(ZMemberCriteria.FindRequest criteria) {
+  public List<ZMember> findAll(ZMemberCriteria.FindByIdCriteria criteria) {
     return memberTemplateRepository.findAll(criteria);
   }
 
@@ -24,7 +24,7 @@ public class ZMemberService {
     return memberRepository.findById(id).orElseThrow();
   }
 
-  public String save(ZMemberCommand.SaveRequest request) {
+  public String save(ZMemberCommand.CreateMemberCommand request) {
     ZMember member = memberRepository.save(
         ZMember.builder()
             .name(request.getName())

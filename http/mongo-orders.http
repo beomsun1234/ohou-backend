@@ -1,0 +1,41 @@
+### POST create cart order
+POST http://localhost:8080/mongo-api/members/61a7ad5707fe686bf8a2fb76/cart/orders
+Content-Type: application/json
+Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
+
+{
+  "productId": [
+    "61a7a5226e57565fe532a3fd"
+  ],
+  "email": "email",
+  "name": "name",
+  "phone": "phone",
+  "price": 100000,
+  "quantity": 2,
+  "shippingAddress": {
+    "zipCode": "zipCode",
+    "address": "address",
+    "addressDetail": "addressDetail"
+  }
+}
+
+### POST create order
+POST http://localhost:8080/mongo-api/members/61a7ad5707fe686bf8a2fb76/orders
+Content-Type: application/json
+Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
+
+{
+  "productId": [
+    "61a7a5226e57565fe532a3fd"
+  ],
+  "email": "email",
+  "name": "name",
+  "phone": "phone",
+  "price": 100000,
+  "quantity": 2,
+  "shippingAddress": {
+    "zipCode": "zipCode",
+    "address": "address",
+    "addressDetail": "addressDetail"
+  }
+}
