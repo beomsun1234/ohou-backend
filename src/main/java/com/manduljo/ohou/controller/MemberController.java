@@ -9,6 +9,7 @@ import com.manduljo.ohou.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -70,6 +71,7 @@ public class MemberController {
      * @param memberUpdatePasswordDto
      * @return
      */
+    @CacheEvict(value = "test", allEntries = true)
     @PutMapping("member/{id}/password")
     public ResponseEntity<ApiCommonResponse> updatePassword(@PathVariable(name = "id") Long userId, @RequestBody MemberUpdatePasswordDto memberUpdatePasswordDto){
         return new ResponseEntity<>(memberService.updatePassword(userId,memberUpdatePasswordDto),HttpStatus.OK);
