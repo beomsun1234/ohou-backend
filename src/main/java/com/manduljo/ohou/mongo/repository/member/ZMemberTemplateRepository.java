@@ -16,6 +16,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -87,6 +89,16 @@ public class ZMemberTemplateRepository {
         .findFirst()
         .orElse(null);
     return updatedCartItem == null ? null : updatedCartItem.getId();
+  }
+
+  public void pullCartItemIn(String memberId, Set<String> cartItemIdSet) {
+    List<ObjectId> cartItemObjectIdList = cartItemIdSet.stream().map(ObjectId::new).collect(Collectors.toUnmodifiableList());
+
+    mongoTemplate.updateMulti(
+        Query.query(Criteria.where("_id").is(new ObjectId(memberId))),
+        new Update().pull("cart_item_list", Query.query(Criteria.where("_id").in(cartItemObjectIdList))),
+        ZMember.class
+    );
   }
 
 }

@@ -2,9 +2,6 @@ package com.manduljo.ohou.mongo.service.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.List;
 
@@ -27,10 +24,28 @@ public class ZOrderCommand {
 
   @Getter
   @NoArgsConstructor
-  // @AllArgsConstructor
+  @AllArgsConstructor
   @Builder
   @ToString
   public static class CreateCartOrderInfo {
+    private String orderId;
+    private String memberId;
+    private ShippingAddress shippingAddress;
+    private int totalPrice;
+    private List<Item> orderItemList;
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @ToString
+    public static class Item {
+      private String orderItemId;
+      private String productId;
+      private String productName;
+      private int productPrice;
+      private int productQuantity;
+    }
   }
 
   @Getter

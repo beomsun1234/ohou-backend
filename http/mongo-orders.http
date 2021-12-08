@@ -4,14 +4,13 @@ Content-Type: application/json
 Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
 
 {
-  "productId": [
-    "61a7a5226e57565fe532a3fd"
+  "cartItemIds": [
+    "61a7d84465d08a56db80d7b1",
+    "61b0a3f51c20a477d6394ce3"
   ],
   "email": "email",
   "name": "name",
   "phone": "phone",
-  "price": 100000,
-  "quantity": 2,
   "shippingAddress": {
     "zipCode": "zipCode",
     "address": "address",
