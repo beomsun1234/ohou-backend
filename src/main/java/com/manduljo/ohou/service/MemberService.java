@@ -67,7 +67,7 @@ public class MemberService {
         Member member = memberRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지않습니다"));
         if (memberUpdateRequestDto.getProfileImage()==null){
             return MemberInfo.builder().entity(memberRepository
-                    .save(member.updateMyInfo(memberUpdateRequestDto.getNickname(), memberUpdateRequestDto.getGender(), member.getProfileImage(), memberUpdateRequestDto.getIntroduce())))
+                    .save(member.updateMyInfo(memberUpdateRequestDto.getNickname(), memberUpdateRequestDto.getGender(), null, memberUpdateRequestDto.getIntroduce())))
                     .build();
         }
         if(!imageUtil.checkContentType(memberUpdateRequestDto.getProfileImage().getContentType())){
