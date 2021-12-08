@@ -3,10 +3,12 @@ package com.manduljo.ohou.mongo.repository.member;
 import com.manduljo.ohou.mongo.domain.member.ZCartItem;
 import com.manduljo.ohou.mongo.domain.member.ZMember;
 import com.manduljo.ohou.mongo.service.cart.ZCartCommand;
+import com.manduljo.ohou.mongo.service.member.ZMemberCommand;
 import com.manduljo.ohou.mongo.service.member.ZMemberCriteria;
 import com.mongodb.client.result.UpdateResult;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -101,4 +103,35 @@ public class ZMemberTemplateRepository {
     );
   }
 
+  public ZMember updateMember(ZMemberCommand.UpdateMemberCommand command, String imagePath) {
+    Update update = new Update()
+        .set("nickname", command.getNickname())
+        .set("introduce", command.getIntroduce())
+        .set("gender", command.getGender().name());
+
+    setImagePath(update, imagePath);
+
+    return mongoTemplate.findAndModify(
+        Query.query(Criteria.where("_id").is(command.getId())),
+        update,
+        FindAndModifyOptions.options().returnNew(true),
+        ZMember.class
+    );
+  }
+
+  private void setImagePath(Update update, String imagePath) {
+    if (imagePath == null) {
+      update.unset("profile_image");
+    } else {
+      update.set("profile_image", imagePath);
+    }
+  }
+
+  public UpdateResult updateMemberPassword(String id, String encodedPassword) {
+    return mongoTemplate.updateFirst(
+        Query.query(Criteria.where("_id").is(id)),
+        new Update().set("password", encodedPassword),
+        ZMember.class
+    );
+  }
 }

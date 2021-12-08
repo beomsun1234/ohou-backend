@@ -1,4 +1,4 @@
-### GET find product by id
+### GET get product detail
 GET http://localhost:8080/mongo-api/products/619e2a221c71357bc5a4dc72
 Accept: application/vnd.com.manduljo.ohou.v1+json;charset=UTF-8
 

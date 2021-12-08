@@ -23,11 +23,11 @@ public class ZProductController {
   @GetMapping("/{id}")
   public ApiCommonResponse<ZProductDto.GetProductDetailResponse> getProductDetail(@PathVariable String id) {
     ZProductCriteria.GetProductDetailInfo info = productService.getProductDetailById(id);
-    ZProductDto.GetProductDetailResponse response = productDetailInfoToGetProductDetailResponse(info);
+    ZProductDto.GetProductDetailResponse response = toResponse(info);
     return new ApiCommonResponse<>(String.valueOf(HttpStatus.OK.value()), "상품 상세 조회 성공", response);
   }
 
-  private ZProductDto.GetProductDetailResponse productDetailInfoToGetProductDetailResponse(ZProductCriteria.GetProductDetailInfo productDetailInfo) {
+  private ZProductDto.GetProductDetailResponse toResponse(ZProductCriteria.GetProductDetailInfo productDetailInfo) {
     return ZProductDto.GetProductDetailResponse.builder()
         .id(productDetailInfo.getId())
         .productName(productDetailInfo.getProductName())
@@ -42,20 +42,20 @@ public class ZProductController {
       @RequestParam(name = "search", required = false) String searchText,
       @RequestParam int page
   ) {
-    ZProductCriteria.FindProductBySearchTextCriteria criteria = makeFindProductBySearchTextCriteria(searchText, page);
+    ZProductCriteria.FindProductBySearchTextCriteria criteria = toFindProductBySearchTextCriteria(searchText, page);
     ZProductCriteria.FindProductBySearchTextPageInfo info = productService.findProductBySearchTextPageInfo(criteria);
-    ZProductDto.FindProductResponse response = toFindProductResponse(info);
+    ZProductDto.FindProductResponse response = toResponse(info);
     return new ApiCommonResponse<>(String.valueOf(HttpStatus.OK.value()), "상품 검색 성공", response);
   }
 
-  private ZProductCriteria.FindProductBySearchTextCriteria makeFindProductBySearchTextCriteria(String searchText, int page) {
+  private ZProductCriteria.FindProductBySearchTextCriteria toFindProductBySearchTextCriteria(String searchText, int page) {
     return ZProductCriteria.FindProductBySearchTextCriteria.builder()
         .searchText(searchText)
         .pageable(PageRequest.of(page, 15, Sort.by(Sort.Order.desc("_id"))))
         .build();
   }
 
-  private ZProductDto.FindProductResponse toFindProductResponse(ZProductCriteria.FindProductBySearchTextPageInfo info) {
+  private ZProductDto.FindProductResponse toResponse(ZProductCriteria.FindProductBySearchTextPageInfo info) {
     return ZProductDto.FindProductResponse.builder()
         .totalPage(info.getTotalPage())
         .totalCount(info.getTotalCount())
@@ -69,12 +69,12 @@ public class ZProductController {
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private ZProductDto.FindProductResponse.Item toResponseItem(ZProductCriteria.FindProductBySearchTextPageInfo.Item item) {
+  private ZProductDto.FindProductResponse.Item toResponseItem(ZProductCriteria.FindProductBySearchTextPageInfo.Item infoItem) {
     return ZProductDto.FindProductResponse.Item.builder()
-        .id(item.getId())
-        .productName(item.getProductName())
-        .price(item.getPrice())
-        .thumbnailImage(item.getThumbnailImage())
+        .id(infoItem.getId())
+        .productName(infoItem.getProductName())
+        .price(infoItem.getPrice())
+        .thumbnailImage(infoItem.getThumbnailImage())
         .build();
   }
 
