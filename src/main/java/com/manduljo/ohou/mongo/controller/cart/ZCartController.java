@@ -33,21 +33,21 @@ public class ZCartController {
         .build();
   }
 
-  private List<ZCartDto.FindCartItemByMemberIdResponse.Item> toResponseItemList(List<ZCartCriteria.FindCartItemByMemberIdInfo.Item> cartItemList) {
-    return cartItemList.stream()
+  private List<ZCartDto.FindCartItemByMemberIdResponse.Item> toResponseItemList(List<ZCartCriteria.FindCartItemByMemberIdInfo.Item> infoItemList) {
+    return infoItemList.stream()
         .map(this::toResponseItem)
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private ZCartDto.FindCartItemByMemberIdResponse.Item toResponseItem(ZCartCriteria.FindCartItemByMemberIdInfo.Item cartItem) {
+  private ZCartDto.FindCartItemByMemberIdResponse.Item toResponseItem(ZCartCriteria.FindCartItemByMemberIdInfo.Item infoItem) {
     return ZCartDto.FindCartItemByMemberIdResponse.Item.builder()
-        .cartItemId(cartItem.getCartItemId())
-        .productId(cartItem.getProductId())
-        .productName(cartItem.getProductName())
-        .thumbnailImage(cartItem.getThumbnailImage())
-        .price(cartItem.getPrice())
-        .quantity(cartItem.getQuantity())
-        .totalPrice(cartItem.getTotalPrice())
+        .cartItemId(infoItem.getCartItemId())
+        .productId(infoItem.getProductId())
+        .productName(infoItem.getProductName())
+        .thumbnailImage(infoItem.getThumbnailImage())
+        .price(infoItem.getPrice())
+        .quantity(infoItem.getQuantity())
+        .totalPrice(infoItem.getTotalPrice())
         .build();
   }
 

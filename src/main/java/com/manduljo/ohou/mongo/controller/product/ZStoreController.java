@@ -31,20 +31,20 @@ public class ZStoreController {
       @RequestParam(name = "category", required = false) String categoryId,
       @RequestParam int page
   ) {
-    ZProductCriteria.FindProductByCategoryCriteria criteria = makeFindProductByCategoryCriteria(categoryId, page);
+    ZProductCriteria.FindProductByCategoryCriteria criteria = toFindProductByCategoryCriteria(categoryId, page);
     ZProductCriteria.FindProductByCategoryResult result = productService.findProductByCategoryPageInfo(criteria);
-    ZProductDto.FindProductByCategoryResponse response = toFindProductByCategoryResponse(result);
+    ZProductDto.FindProductByCategoryResponse response = toResponse(result);
     return new ApiCommonResponse<>(String.valueOf(HttpStatus.OK.value()), "상품 검색 성공", response);
   }
 
-  private ZProductCriteria.FindProductByCategoryCriteria makeFindProductByCategoryCriteria(String categoryId, int page) {
+  private ZProductCriteria.FindProductByCategoryCriteria toFindProductByCategoryCriteria(String categoryId, int page) {
     return ZProductCriteria.FindProductByCategoryCriteria.builder()
         .categoryId(categoryId)
         .pageable(PageRequest.of(page, 15))
         .build();
   }
 
-  private ZProductDto.FindProductByCategoryResponse toFindProductByCategoryResponse(
+  private ZProductDto.FindProductByCategoryResponse toResponse(
       ZProductCriteria.FindProductByCategoryResult result
   ) {
     return ZProductDto.FindProductByCategoryResponse.builder()

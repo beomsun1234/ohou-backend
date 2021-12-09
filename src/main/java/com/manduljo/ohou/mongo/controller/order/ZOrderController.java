@@ -28,16 +28,6 @@ public class ZOrderController {
     ZOrderCommand.CreateCartOrderInfo info = orderService.createCartOrder(command);
     ZOrderDto.CreateCartOrderResponse response = toResponse(info);
     return new ApiCommonResponse<>(String.valueOf(HttpStatus.OK.value()), "카트 주문 성공", response);
-    // return ApiCommonResponse.builder()
-    //     .data("주문 성공")
-    //     .message("장바구니 주문 성공")
-    //     .status(String.valueOf(HttpStatus.OK))
-    //     .build();
-  }
-
-  private ZOrderDto.CreateCartOrderResponse toResponse(ZOrderCommand.CreateCartOrderInfo info) {
-    return ZOrderDto.CreateCartOrderResponse
-        .builder().build();
   }
 
   private ZOrderCommand.CreateCartOrderCommand toCommand(String memberId, ZOrderDto.CreateCartOrderRequest request) {
@@ -56,6 +46,40 @@ public class ZOrderController {
         .address(shippingAddress.getAddress())
         .addressDetail(shippingAddress.getAddressDetail())
         .zipCode(shippingAddress.getZipCode())
+        .build();
+  }
+
+  private ZOrderDto.CreateCartOrderResponse toResponse(ZOrderCommand.CreateCartOrderInfo info) {
+    return ZOrderDto.CreateCartOrderResponse.builder()
+        .orderId(info.getOrderId())
+        .memberId(info.getMemberId())
+        .shippingAddress(toResponseShippingAddress(info))
+        .totalPrice(info.getTotalPrice())
+        .orderItemList(toCreateCartOrderResponseItemList(info.getOrderItemList()))
+        .build();
+  }
+
+  private ZOrderDto.ShippingAddress toResponseShippingAddress(ZOrderCommand.CreateCartOrderInfo info) {
+    return ZOrderDto.ShippingAddress.builder()
+        .zipCode(info.getShippingAddress().getZipCode())
+        .address(info.getShippingAddress().getAddress())
+        .addressDetail(info.getShippingAddress().getAddressDetail())
+        .build();
+  }
+
+  private List<ZOrderDto.CreateCartOrderResponse.Item> toCreateCartOrderResponseItemList(List<ZOrderCommand.CreateCartOrderInfo.Item> infoItemList) {
+    return infoItemList.stream()
+        .map(this::toResponseItem)
+        .collect(Collectors.toUnmodifiableList());
+  }
+
+  private ZOrderDto.CreateCartOrderResponse.Item toResponseItem(ZOrderCommand.CreateCartOrderInfo.Item infoItem) {
+    return ZOrderDto.CreateCartOrderResponse.Item.builder()
+        .orderItemId(infoItem.getOrderItemId())
+        .productId(infoItem.getProductId())
+        .productName(infoItem.getProductName())
+        .productPrice(infoItem.getProductPrice())
+        .productQuantity(infoItem.getProductQuantity())
         .build();
   }
 
@@ -87,13 +111,13 @@ public class ZOrderController {
     return ZOrderDto.CreateOrderResponse.builder()
         .orderId(info.getOrderId())
         .memberId(info.getMemberId())
-        .shippingAddress(toShippingAddress(info))
+        .shippingAddress(toResponseShippingAddress(info))
         .totalPrice(info.getTotalPrice())
-        .orderItemList(toInfoItemList(info.getOrderItemList()))
+        .orderItemList(toCreateOrderResponseItemList(info.getOrderItemList()))
         .build();
   }
 
-  private ZOrderDto.ShippingAddress toShippingAddress(ZOrderCommand.CreateOrderInfo info) {
+  private ZOrderDto.ShippingAddress toResponseShippingAddress(ZOrderCommand.CreateOrderInfo info) {
     return ZOrderDto.ShippingAddress.builder()
         .zipCode(info.getShippingAddress().getZipCode())
         .address(info.getShippingAddress().getAddress())
@@ -101,19 +125,19 @@ public class ZOrderController {
         .build();
   }
 
-  private List<ZOrderDto.CreateOrderResponse.Item> toInfoItemList(List<ZOrderCommand.CreateOrderInfo.Item> orderItemList) {
-    return orderItemList.stream()
+  private List<ZOrderDto.CreateOrderResponse.Item> toCreateOrderResponseItemList(List<ZOrderCommand.CreateOrderInfo.Item> infoItemList) {
+    return infoItemList.stream()
         .map(this::toResponseItem)
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private ZOrderDto.CreateOrderResponse.Item toResponseItem(ZOrderCommand.CreateOrderInfo.Item item) {
+  private ZOrderDto.CreateOrderResponse.Item toResponseItem(ZOrderCommand.CreateOrderInfo.Item infoItem) {
     return ZOrderDto.CreateOrderResponse.Item.builder()
-        .orderItemId(item.getOrderItemId())
-        .productId(item.getProductId())
-        .productName(item.getProductName())
-        .productPrice(item.getProductPrice())
-        .productQuantity(item.getProductQuantity())
+        .orderItemId(infoItem.getOrderItemId())
+        .productId(infoItem.getProductId())
+        .productName(infoItem.getProductName())
+        .productPrice(infoItem.getProductPrice())
+        .productQuantity(infoItem.getProductQuantity())
         .build();
   }
 

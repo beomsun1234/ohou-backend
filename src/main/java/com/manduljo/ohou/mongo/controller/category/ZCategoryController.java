@@ -24,11 +24,11 @@ public class ZCategoryController {
   @GetMapping
   public ApiCommonResponse<ZCategoryDto.FindCategoryResponse> findCategory() {
     ZCategoryCriteria.FindCategoryInfo info = categoryService.findCategoryInfo();
-    ZCategoryDto.FindCategoryResponse response = toFindCategoryResponse(info);
+    ZCategoryDto.FindCategoryResponse response = toResponse(info);
     return new ApiCommonResponse<>(String.valueOf(HttpStatus.OK.value()), "카테고리 조회 성공", response);
   }
 
-  private ZCategoryDto.FindCategoryResponse toFindCategoryResponse(ZCategoryCriteria.FindCategoryInfo info) {
+  private ZCategoryDto.FindCategoryResponse toResponse(ZCategoryCriteria.FindCategoryInfo info) {
     return ZCategoryDto.FindCategoryResponse.builder()
         .categoryList(toResponseItemList(info.getCategoryList()))
         .build();
@@ -40,12 +40,12 @@ public class ZCategoryController {
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private ZCategoryDto.FindCategoryResponse.Item toResponseItem(ZCategoryCriteria.FindCategoryInfo.Item item) {
+  private ZCategoryDto.FindCategoryResponse.Item toResponseItem(ZCategoryCriteria.FindCategoryInfo.Item infoItem) {
     return ZCategoryDto.FindCategoryResponse.Item.builder()
-        .id(item.getId())
-        .categoryName(item.getCategoryName())
-        .parentCategoryId(item.getParentCategoryId())
-        .categoryList(toResponseItemList(item.getCategoryList()))
+        .id(infoItem.getId())
+        .categoryName(infoItem.getCategoryName())
+        .parentCategoryId(infoItem.getParentCategoryId())
+        .categoryList(toResponseItemList(infoItem.getCategoryList()))
         .build();
   }
 
