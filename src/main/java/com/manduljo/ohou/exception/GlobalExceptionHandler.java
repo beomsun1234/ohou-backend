@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
                 .builder()
                 .message(e.getMessage())
                 .error("bad request")
-                .code(String.valueOf(HttpStatus.BAD_REQUEST))
+                .code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
                 .build(), HttpStatus.BAD_REQUEST);
     }
 }
