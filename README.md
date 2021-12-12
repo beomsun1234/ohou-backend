@@ -3,5 +3,4 @@
 
 ## ERD
 
-![ohouerd박범선](https://user-images.githubusercontent.com/68090443/145700123-0dcf1891-37cc-4ee2-b142-bb01ce789641.PNG)
-
+![erdohouPark](https://user-images.githubusercontent.com/68090443/145700193-1380ae3e-e6d2-40a5-b906-eff132ef27de.PNG
