@@ -79,7 +79,7 @@ public class ZOrderService {
     return ZOrderItem.builder()
         .id(new ObjectId().toHexString())
         .productId(product.getId())
-        .productName(product.getProductName())
+        .productName(product.getName())
         .productPrice(product.getPrice())
         .productQuantity(productQuantity)
         .build();
@@ -158,7 +158,7 @@ public class ZOrderService {
     return ZOrderItem.builder()
         .id(new ObjectId().toHexString())
         .productId(product.getId())
-        .productName(product.getProductName())
+        .productName(product.getName())
         .productPrice(product.getPrice())
         .productQuantity(command.getQuantity())
         .build();

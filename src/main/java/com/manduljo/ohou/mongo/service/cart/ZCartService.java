@@ -53,7 +53,7 @@ public class ZCartService {
     return ZCartCriteria.FindCartItemByMemberIdInfo.Item.builder()
         .cartItemId(cartItem.getId())
         .productId(cartItem.getProductId())
-        .productName(product.getProductName())
+        .productName(product.getName())
         .thumbnailImage(product.getThumbnailImage())
         .price(product.getPrice())
         .quantity(cartItem.getProductQuantity())

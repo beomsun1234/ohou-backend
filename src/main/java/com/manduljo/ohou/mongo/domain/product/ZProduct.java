@@ -19,13 +19,15 @@ public class ZProduct {
   @MongoId(FieldType.OBJECT_ID)
   private String id;
 
-  private String productName;
+  private String name;
 
   private int price;
 
   private String thumbnailImage;
 
-  private List<String> productImageList;
+  private List<ZProductCoverImage> coverImageList;
+
+  private String detailImage;
 
   @Field(targetType = FieldType.OBJECT_ID)
   private String categoryId;

@@ -2,6 +2,7 @@ package com.manduljo.ohou.mongo.service.product;
 
 import com.manduljo.ohou.mongo.domain.category.ZCategory;
 import com.manduljo.ohou.mongo.domain.product.ZProduct;
+import com.manduljo.ohou.mongo.domain.product.ZProductCoverImage;
 import com.manduljo.ohou.mongo.repository.category.ZCategoryRepository;
 import com.manduljo.ohou.mongo.repository.product.ZProductRepository;
 import com.manduljo.ohou.mongo.repository.product.ZProductTemplateRepository;
@@ -33,10 +34,24 @@ public class ZProductService {
     ZProduct product = productRepository.findById(id).orElseThrow();
     return ZProductCriteria.GetProductDetailInfo.builder()
         .id(product.getId())
-        .productName(product.getProductName())
+        .productName(product.getName())
         .price(product.getPrice())
         .thumbnailImage(product.getThumbnailImage())
-        .productImageList(product.getProductImageList())
+        .coverImageList(toCoverImageList(product.getCoverImageList()))
+        .detailImage(product.getDetailImage())
+        .build();
+  }
+
+  private List<ZProductCriteria.GetProductDetailInfo.CoverImageItem> toCoverImageList(List<ZProductCoverImage> coverImageList) {
+    return coverImageList.stream()
+        .map(this::toProductCoverImage)
+        .collect(Collectors.toUnmodifiableList());
+  }
+
+  private ZProductCriteria.GetProductDetailInfo.CoverImageItem toProductCoverImage(ZProductCoverImage coverImage) {
+    return ZProductCriteria.GetProductDetailInfo.CoverImageItem.builder()
+        .main(coverImage.getMain())
+        .left(coverImage.getLeft())
         .build();
   }
 
@@ -44,7 +59,7 @@ public class ZProductService {
     String searchText = criteria.getSearchText();
     Pageable pageable = criteria.getPageable();
     Page<ZProduct> productPage = StringUtils.hasText(searchText) ?
-        productRepository.findByProductNameContains(searchText, pageable) :
+        productRepository.findByNameContains(searchText, pageable) :
         productRepository.findAll(pageable);
     return ZProductCriteria.FindProductBySearchTextPageInfo.builder()
         .totalPage(productPage.getTotalPages())
@@ -52,7 +67,7 @@ public class ZProductService {
         .productList(productPage.stream()
             .map(product -> ZProductCriteria.FindProductBySearchTextPageInfo.Item.builder()
                 .id(product.getId())
-                .productName(product.getProductName())
+                .productName(product.getName())
                 .price(product.getPrice())
                 .thumbnailImage(product.getThumbnailImage())
                 .build()
@@ -78,7 +93,7 @@ public class ZProductService {
         .productList(productPage.stream()
             .map(product -> ZProductCriteria.FindProductByCategoryPageInfo.Item.builder()
                 .id(product.getId())
-                .productName(product.getProductName())
+                .productName(product.getName())
                 .price(product.getPrice())
                 .thumbnailImage(product.getThumbnailImage())
                 .build()

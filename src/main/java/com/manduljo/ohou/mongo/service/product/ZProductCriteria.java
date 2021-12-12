@@ -18,7 +18,18 @@ public class ZProductCriteria {
     private String productName;
     private int price;
     private String thumbnailImage;
-    private List<String> productImageList;
+    private List<CoverImageItem> coverImageList;
+    private String detailImage;
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @ToString
+    public static class CoverImageItem {
+      private String main;
+      private String left;
+    }
   }
 
   @Getter

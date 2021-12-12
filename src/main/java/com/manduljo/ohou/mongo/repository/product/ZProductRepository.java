@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ZProductRepository extends MongoRepository<ZProduct, String> {
 
-  Page<ZProduct> findByProductNameContains(String searchText, Pageable pageable);
+  Page<ZProduct> findByNameContains(String searchText, Pageable pageable);
 
   Page<ZProduct> findByCategoryIdIn(List<String> categoryIdList, Pageable pageable);
 
