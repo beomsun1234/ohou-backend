@@ -8,5 +8,4 @@
 
 ## 아키텍처 구성
 
-![배포환경](https://user-images.githubusercontent.com/68090443/146532399-9a73150f-d5c5-40b9-b2cd-af66fcfcc226.PNG)
-
+![배포환경2](https://user-images.githubusercontent.com/68090443/146532976-35f65d95-6df1-4e37-8963-79d2c26e62f5.PNG)
