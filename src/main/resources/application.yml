@@ -18,9 +18,16 @@ spring:
     active: dev
     include: oauth2, secret_key
 
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+
 
 logging:
   level:
     jdbc:
       sqlonly=debug: debug
-    org.springframework.data.mongodb: DEBUG
+    org.springframework.data.mongodb: DEBUG+
+
+
