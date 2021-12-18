@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +34,21 @@ public class ZProductController {
         .productName(productDetailInfo.getProductName())
         .price(productDetailInfo.getPrice())
         .thumbnailImage(productDetailInfo.getThumbnailImage())
-        .productImageList(productDetailInfo.getProductImageList())
+        .mainImage(toMainImage(productDetailInfo.getCoverImageList()))
+        .leftCoverImageList(toLeftCoverImageList(productDetailInfo.getCoverImageList()))
+        .detailImage(productDetailInfo.getDetailImage())
         .build();
+  }
+
+  private String toMainImage(List<ZProductCriteria.GetProductDetailInfo.CoverImageItem> coverImageItemList) {
+    return CollectionUtils.isEmpty(coverImageItemList) ? null : coverImageItemList.get(0).getMain();
+  }
+
+  private List<String> toLeftCoverImageList(List<ZProductCriteria.GetProductDetailInfo.CoverImageItem> coverImageItemList) {
+    return CollectionUtils.isEmpty(coverImageItemList) ? null :
+        coverImageItemList.stream()
+            .map(ZProductCriteria.GetProductDetailInfo.CoverImageItem::getLeft)
+            .collect(Collectors.toUnmodifiableList());
   }
 
   @GetMapping("/search")

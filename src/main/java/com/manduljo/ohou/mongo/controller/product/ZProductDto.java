@@ -22,8 +22,15 @@ public class ZProductDto {
     @JsonProperty("thumbnail")
     private String thumbnailImage;
 
-    @JsonProperty("productImg")
-    private List<String> productImageList;
+    @JsonProperty("mainImages")
+    private String mainImage;
+
+    @JsonProperty("leftCoverImages")
+    private List<String> leftCoverImageList;
+
+    @JsonProperty("productDetailImage")
+    private String detailImage;
+
   }
 
   @Getter
