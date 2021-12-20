@@ -72,6 +72,18 @@ public class ProductQueryRepository {
     }
     //-------------------
 
+    /**
+     * 괸라자용 상품검색(상품 이름으로 검색만)
+     * @param productName
+     * @return
+     */
+    public List<Product> findByProductName(String productName){
+        return queryFactory.selectFrom(product)
+                .where(containsProductName(productName))
+                .orderBy(product.createdDate.desc())
+                .fetch();
+    }
+
     private BooleanExpression eqProductId(Long id){
         if(id!=null){
             return product.id.eq(id);
