@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @Slf4j
@@ -60,5 +62,19 @@ public class CartController {
                 .data(cartService.updateCartItem(id,cartItemUpdateQuantityDto))
                 .message("수량 변경 완료")
                 .build();
+    }
+
+    /**
+     * 카트 삭제
+     */
+    @DeleteMapping("members/{id}/cart")
+    public ApiCommonResponse deleteCartItems(@PathVariable Long id,@RequestBody List<Long> cartItemIds){
+        cartService.deleteCartItemByIdIn(cartItemIds);
+        return ApiCommonResponse.builder()
+                .status(String.valueOf(HttpStatus.OK))
+                .data("카트아이템 삭제 완료")
+                .message("카트아이템 삭제 완료")
+                .build();
+
     }
 }
