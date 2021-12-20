@@ -1,8 +1,9 @@
 package com.manduljo.ohou.service;
 
-import com.manduljo.ohou.ApiCommonResponse;
+
 import com.manduljo.ohou.domain.category.ProductCategory;
 import com.manduljo.ohou.domain.product.Product;
+import com.manduljo.ohou.domain.product.dto.ProductCreateDto;
 import com.manduljo.ohou.domain.product.dto.ProductDetail;
 import com.manduljo.ohou.domain.product.dto.ProductInfo;
 import com.manduljo.ohou.domain.product.dto.ProductPageDto;
@@ -14,16 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
 
 @Service
 @Slf4j
@@ -83,10 +81,14 @@ public class ProductService {
     }
 
 
-    public void createProduct(String id){
+    /**
+     * 상품등록
+     * @param productCreateDto
+     */
+    @Transactional
+    public void createProduct(ProductCreateDto productCreateDto){
         //상품 등록은 서브카테고리만 가능함
-        ProductCategory category = productCategoryQueryRepository.findById(id).orElseThrow(()-> new NoSuchElementException("없는 카테고리 입니다"));
-        Product product = Product.builder().productCategory(category).price(20000).name("test2").build();
-        productRepository.save(product);
+        ProductCategory category = productCategoryQueryRepository.findById(productCreateDto.getCategory_id()).orElseThrow(()-> new NoSuchElementException("없는 카테고리 입니다"));
+        productRepository.save(productCreateDto.toEntity(category));
     }
 }
