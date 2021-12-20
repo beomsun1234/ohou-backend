@@ -38,12 +38,4 @@ public class HomeController {
         return "hello "+userDetails.getMember().getName();
     }
 
-    @CacheEvict(value = "products", allEntries = true)
-    @PostMapping("/test")
-    public String test2(@RequestParam String id){
-        log.info("id={}",id);
-        productService.createProduct(id);
-        return "gd";
-    }
-
 }
