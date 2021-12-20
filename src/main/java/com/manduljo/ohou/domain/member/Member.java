@@ -1,6 +1,5 @@
 package com.manduljo.ohou.domain.member;
 import com.manduljo.ohou.domain.BaseTimeEntity;
-import com.manduljo.ohou.domain.cart.Cart;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,6 +34,8 @@ public class Member extends BaseTimeEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private LoginType loginType;
 
+    @Enumerated(EnumType.STRING)
+    private StatusAt status_at;
 
     @Builder
     public Member (Long id,String email, String name, String password, Role role, LoginType loginType,String profileImage, Gender gender, String introduce){
@@ -49,6 +50,17 @@ public class Member extends BaseTimeEntity implements Serializable {
         this.introduce = introduce;
     }
 
+    @PrePersist
+    public void setStatus_at(){
+        this.status_at = StatusAt.T;
+    }
+
+    /**
+     * 유저 벤
+     */
+    public void benUser(){
+        this.status_at = StatusAt.F;
+    }
     public Member updateEmail(String email){
         this.email = email;
         return this;
