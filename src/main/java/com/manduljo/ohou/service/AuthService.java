@@ -1,6 +1,7 @@
 package com.manduljo.ohou.service;
 import com.manduljo.ohou.ApiCommonResponse;
 import com.manduljo.ohou.domain.member.dto.MemberLoginRequestDto;
+import com.manduljo.ohou.domain.member.dto.MemberLoginSuccessDto;
 import com.manduljo.ohou.oauth2.CustomUserDetails;
 import com.manduljo.ohou.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,16 +28,16 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(memberLoginRequestDto.getEmail(), memberLoginRequestDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        if (!userDetails.getMember().getStatus_at().isActive()){
+        if (!userDetails.getMember().getStatusAt().isActive()){
             throw new RuntimeException("탈퇴한 회원 입니다.");
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("AccessToken",jwtUtils.generateToken(userDetails.getMember().getEmail(), userDetails.getMember().getName()));
-        map.put("id",userDetails.getMember().getId());
         return ApiCommonResponse.builder()
                 .message("로그인성공")
                 .status(String.valueOf(HttpStatus.OK.value()))
-                .data(map)
+                .data(MemberLoginSuccessDto.builder()
+                        .member(userDetails.getMember())
+                        .access_token(jwtUtils.generateToken(userDetails.getMember().getEmail(), userDetails.getMember().getName()))
+                        .build())
                 .build();
     }
 
