@@ -27,7 +27,7 @@ public class MemberInfoA {
         this.introduce = entity.getIntroduce();
         this.role = entity.getRole();
         this.loginType  = entity.getLoginType();
-        this.statusAt = entity.getStatus_at();
+        this.statusAt = entity.getStatusAt();
     }
 
 }
