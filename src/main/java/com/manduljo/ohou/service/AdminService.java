@@ -1,12 +1,12 @@
 package com.manduljo.ohou.service;
 
 import com.manduljo.ohou.domain.member.Member;
+import com.manduljo.ohou.domain.member.StatusAt;
 import com.manduljo.ohou.domain.member.dto.MemberInfoA;
 import com.manduljo.ohou.domain.product.dto.ProductInfo;
 import com.manduljo.ohou.repository.member.MemberRepository;
 import com.manduljo.ohou.repository.product.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,12 +32,12 @@ public class AdminService {
     }
 
     /**
-     * 유저 전체조회
+     * 유저 전체 조회(탈퇴한 회원제외)
      * @return
      */
     @Transactional(readOnly = true)
     public List<MemberInfoA> findAll(){
-        return memberRepository.findAll().stream().map(member -> MemberInfoA.builder().entity(member).build()).collect(Collectors.toList());
+        return memberRepository.findByStatusAt(StatusAt.T).stream().map(member -> MemberInfoA.builder().entity(member).build()).collect(Collectors.toList());
     }
 
     /**
@@ -47,7 +47,7 @@ public class AdminService {
      */
     @Transactional(readOnly = true)
     public MemberInfoA findEmail(String email){
-        return MemberInfoA.builder().entity(memberRepository.findByEmail(email).orElseThrow(()-> new IllegalArgumentException("없는 사용자 입니다"))).build();
+        return MemberInfoA.builder().entity(memberRepository.findByEmailAndStatusAt(email,StatusAt.T).orElseThrow(()-> new IllegalArgumentException("없는 사용자 입니다"))).build();
     }
 
     /**
