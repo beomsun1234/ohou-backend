@@ -16,8 +16,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,7 +46,6 @@ class AdminServiceTest {
         //then
         Assertions.assertThat(productInfos.size()).isEqualTo(2);
     }
-
     @Test
     @DisplayName("유저 전체조회")
     void findAll(){
@@ -54,7 +56,7 @@ class AdminServiceTest {
                 Member.builder().name("park3").id(3L).build(),
                 Member.builder().name("park4").id(4L).build()
         );
-        given(memberRepository.findAll()).willReturn(members);
+        given(memberRepository.findByStatusAt(any())).willReturn(members);
         //then
         List<MemberInfoA> memberInfos = adminService.findAll();
         //then
@@ -66,13 +68,11 @@ class AdminServiceTest {
         //given
         String searchText = "test1234";
         Member member = Member.builder().email("test1234").id(1L).build();
-        given(memberRepository.findByEmail(searchText)).willReturn(java.util.Optional.ofNullable(member));
+        given(memberRepository.findByEmailAndStatusAt(anyString(),any())).willReturn(Optional.ofNullable(member));
         //when
         MemberInfoA memberInfoA = adminService.findEmail(searchText);
         //then
         Assertions.assertThat(memberInfoA.getEmail()).isEqualTo(searchText);
-
-
     }
 
 
