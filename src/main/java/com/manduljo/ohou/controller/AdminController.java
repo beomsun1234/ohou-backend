@@ -60,7 +60,7 @@ public class AdminController {
                 .build(),HttpStatus.OK);
     }
     /**
-     * 상세보기
+     * 유저 상세보기
      */
     @GetMapping("members/{id}")
     public ResponseEntity<ApiCommonResponse> findById(@PathVariable Long id) {
@@ -85,6 +85,21 @@ public class AdminController {
                 .message("유저 탈퇴 성공")
                 .status(String.valueOf(HttpStatus.OK.value()))
                 .build(), HttpStatus.OK);
+    }
+
+    /**
+     * 어드민 상품이름 조회
+     * @param search
+     * @return
+     */
+    @GetMapping("products/search")
+    public ResponseEntity<ApiCommonResponse> findProductContainsName(@RequestParam String search){
+        return new ResponseEntity<>(ApiCommonResponse
+        .builder()
+        .data(adminService.findByProductName(search))
+        .status(String.valueOf(HttpStatus.OK.value()))
+        .message("상품 조회 성공")
+        .build(), HttpStatus.OK);
     }
 
 }
