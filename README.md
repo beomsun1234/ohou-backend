@@ -13,4 +13,4 @@
 
 ## 시연
 
-<iframe width="1280" height="688" src="https://www.youtube.com/embed/DB8UsCbvq90" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![my_project](http://img.youtube.com/vi/DB8UsCbvq90/0.jpg)](https://youtu.be/DB8UsCbvq90) 
